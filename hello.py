@@ -24,7 +24,7 @@ def convert_speech_to_text():
         audio = recognizer.listen(source)
 
     try:
-        text = recognizer.recognize_amazon(audio)
+        text = recognizer.recognize_googley(audio)
         print(text)
     except sr.UnknownValueError:
         print("Could not understand audio")
