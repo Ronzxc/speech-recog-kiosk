@@ -1,7 +1,7 @@
 # rice meals
-chicken = {'name':"Chicken joy", 'image':"images\\chicken.png"}
-burgersteak = {'name':"Burger Steak", 'image':"images\\burgersteak.png"}
+chicken = ("Chicken joy", "images\\chicken.png")
+burgersteak = ("Burger Steak", "images\\burgersteak.png")
 
 # others
-burger = {'name':"Burger", 'image':"images\\burger.png"}
-fries = {'name':"Fries", 'image':"images\\fries.png"}
+burger = ("Cheese Burger", "images\\burger.png")
+fries = ("Fries", "images\\fries.png")

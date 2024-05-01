@@ -6,11 +6,26 @@ import PySimpleGUI as sg
 import utils    
 import time
 
+import menu_item as menu
+ricemeals = [None, menu.chicken, menu.burgersteak]
+othermeals = [None, menu.burger, menu.fries]
+
+ALLOWED_QTY = ["ONE", "TWO", "THREE", "FOUR", "FIVE", "SIX", "SEVEN", "EIGHT", "NINE", "TEN"]
 
 # prompts
 START_PROMPT = "Tap anywhere to start, or Say Start Order for Speech Option"
-WELCOME = "Hello, I'm BINI Aiah. I'm glad to assist you today. Would you like to dine in or take out"
-
+WELCOME = "Hello, I'm Beanie Aiah. I'm glad to assist you today. Would you like to dine in or take out"
+CONFIRM_CHOICE = "You chose "
+CATEGORIES = """""To view specific category, say Rice for Rice meals and Others for Other meals.
+                    Or if you like to view your orders say view orders"""
+RICE_MENU = "You chose rice meals. Say chicken for chicken joy and burger for burger steak"
+OTHER_MENU = "You chose other meals. Say cheese for cheese burger and fries for french fries"
+ASK_QTY = "How many would you like to order?"
+CONFIRM_ITEM = "Say add to cart to confirm item and quantity or cancel item to go back to categories"
+CONFIRM_ADD = "Item added to cart"
+VIEW_ORDER = """You said view order. Say Modify to modify your order, Checkout to proceed to payment, 
+                Exit to cancel transaction or Back to go back to menu"""
+EXIT_APP = "You said exit. Hope to see you again soon."
 
 def get_command(window=None, *args):
     while True:
