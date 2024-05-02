@@ -37,10 +37,16 @@ order_menu_layout = [[sg.Text(text="Pick a Category",
                     background_color=('#C40C0C'))],
                     [sg.Column([[tab_group]], background_color='#C40C0C')]]
 
+#-LISTEN2-
 dine_take_layout = [[sg.Text(text="Dine-in or Take-out", 
                     expand_x=True,
                     justification='center',
                     background_color=('#C40C0C'))],
+                    [sg.Button('DINE OR TAKE',
+                    font=('Calibri', 15), 
+                    expand_x=True, 
+                    key = ('-THREAD-', 'DINE OR TAKE'),
+                    enable_events=True)]
                     ]
 
 ask_qty = [[sg.Text(text="How many?", 
@@ -92,13 +98,14 @@ home_layout = [
              justification='center')],
 ]
 
-main_layout = [[sg.Column(home_layout, key= '-LISTEN1-'), 
-             sg.Column(order_menu_layout, visible=False, key='-LISTEN2-'),
-             sg.Button('DINE OR TAKE',
-             font=('Calibri', 15), 
-             expand_x=True, 
-             key = ('-THREAD-', 'DINE OR TAKE'),
-             enable_events=True)]]
+main_layout = [
+            [sg.Column(home_layout, key= '-LISTEN1-'), 
+             sg.Column(dine_take_layout, visible=False, key='-LISTEN2-'),
+             sg.Column(order_menu_layout, visible=False, key='-LISTEN3-'),
+             sg.Column(ask_qty, visible=False, key='-LISTEN4-'),
+             sg.Column(cart, visible=False, key='-LISTEN5-'),
+             sg.Column(checkout, visible=False, key='-LISTEN6-'),
+             ]]
 
     
 sg.theme_background_color('#C40C0C')
@@ -130,7 +137,9 @@ while True:
 
         elif event[1] == 'DINE IN' or event[1] == 'TAKE OUT':
             # RONWALDO UPDATE MO UI HERE
-            window['-LISTEN1-'].update("change to speech 4 gui (see figma for ref)") # TEMPORARY FOR CHECKING, DELETE WHEN UI UPDATED
+            window[f'-LISTEN{layout_num}-'].update(visible=False)
+            layout_num = 3
+            window[f'-LISTEN{layout_num}-'].update(visible=True) # TEMPORARY FOR CHECKING, DELETE WHEN UI UPDATED
 
             window.start_thread(lambda: eh.start_assist(window, eh.CONFIRM_CHOICE + event[1] + "." + eh.CATEGORIES, 11, 'CATEGORY'), ('-THREAD-', '-THREAD ENDED-'))
 
@@ -190,13 +199,15 @@ while True:
 
         elif event[1] == "ASK QTY":
             window.start_thread(lambda: eh.get_command(window, *eh.ALLOWED_QTY), ('-THREAD-', '-THREAD ENDED-'))
-            window['-LISTEN1-'].update("Listening...")
+            window[f'-LISTEN{layout_num}-'].update(visible=False)
+            layout_num = 4
+            window[f'-LISTEN{layout_num}-'].update(visible=True)
 
         elif event[1] in eh.ALLOWED_QTY:
             temp_qty = eh.ALLOWED_QTY.index(event[1]) + 1
 
             # RONWALDO UPDATE MO UI HERE
-            window['-LISTEN1-'].update(f"speech 11: {event[1]}") # TEMPORARY FOR CHECKING, DELETE WHEN UI UPDATED
+            # TEMPORARY FOR CHECKING, DELETE WHEN UI UPDATED
             
             window.start_thread(lambda: eh.start_assist(window, eh.CONFIRM_ITEM, 5, 'CONFIRM ITEM'), ('-THREAD-', '-THREAD ENDED-'))
 
@@ -229,6 +240,12 @@ while True:
             window['-LISTEN1-'].update("change to speech 12 gui (see figma for ref)") # TEMPORARY FOR CHECKING, DELETE WHEN UI UPDATED
 
             window.start_thread(lambda: eh.start_assist(window, eh.VIEW_ORDER, 10, 'ORDER ACTION'), ('-THREAD-', '-THREAD ENDED-'))
+            
+            window[f'-LISTEN{layout_num}-'].update(visible=False)
+            layout_num = 5
+            window[f'-LISTEN{layout_num}-'].update(visible=True)
+            
+            
             
 
         elif event[1] == "ORDER ACTION":
