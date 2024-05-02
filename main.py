@@ -119,6 +119,46 @@ while True:
     event, values = window.read()
     if event in (None, 'Exit'):
         break
+    elif event[0] == '-MODIFY THREAD-':
+        if event[1] == 'FINISHED PROMPT':
+            window.start_thread(lambda: eh.get_command(window, "CHICKEN", "BURGER", "FRIES", "CHEESE"), ('-THREAD-', '-THREAD ENDED-'))
+            window['-LISTEN1-'].update("Listening...")
+        
+        elif event[1] in ["CHICKEN", "BURGER", "FRIES", "CHEESE"]:
+            match event[1]:
+                case "CHICKEN":
+                    #RONWALDO KINDLY CHANGE UI
+                    window['-LISTEN1-'].update("change to speech 14 gui (see figma for ref)") # TEMPORARY FOR CHECKING, DELETE WHEN UI UPDATED
+
+                    temp_item = menu.chicken
+                    window.start_thread(lambda: eh.start_assist(window, "You want to modify your Chicken Joy order" + eh.MODIFY_OPTIONS, 7, 'MODIFY OPTION'), ('-THREAD-', '-THREAD ENDED-'))
+
+                case "BURGER":
+                    #RONWALDO KINDLY CHANGE UI
+                    window['-LISTEN1-'].update("change to speech 14 gui (see figma for ref)") # TEMPORARY FOR CHECKING, DELETE WHEN UI UPDATED
+
+                    temp_item = menu.burgersteak
+                    window.start_thread(lambda: eh.start_assist(window, "You want to modify Burger Steak order" + eh.MODIFY_OPTIONS, 7, 'MODIFY OPTION'), ('-THREAD-', '-THREAD ENDED-'))
+
+
+                case "FRIES":
+                    #RONWALDO KINDLY CHANGE UI
+                    window['-LISTEN1-'].update("change to speech 14 gui (see figma for ref)") # TEMPORARY FOR CHECKING, DELETE WHEN UI UPDATED
+
+                    temp_item = menu.fries
+                    window.start_thread(lambda: eh.start_assist(window, "You want to modify French Fries order" + eh.MODIFY_OPTIONS, 7, 'MODIFY OPTION'), ('-THREAD-', '-THREAD ENDED-'))
+
+
+                case "CHEESE":
+                    #RONWALDO KINDLY CHANGE UI
+                    window['-LISTEN1-'].update("change to speech 14 gui (see figma for ref)") # TEMPORARY FOR CHECKING, DELETE WHEN UI UPDATED
+
+                    temp_item = menu.burger
+                    window.start_thread(lambda: eh.start_assist(window, "You want to modify Cheese Burger order" + eh.MODIFY_OPTIONS, 7, 'MODIFY OPTION'), ('-THREAD-', '-THREAD ENDED-'))
+      
+                    
+
+
     elif event[0] == '-THREAD-':
         if event[1] == 'DONE START':
             window.start_thread(lambda: eh.get_command(window, "START ORDER"), ('-THREAD-', '-THREAD ENDED-'))
@@ -169,7 +209,7 @@ while True:
             window['-LISTEN1-'].update("Listening...")
 
 
-        elif event[1] in ["CHICKEN", "BURGER", "FRIES", "CHEESE"]:
+        elif event[1] in ["CHICKEN", "BURGER", "FRIES", "CHEESE", "CHANGE"]:
             if event[1] == "CHICKEN":
                 temp_item = menu.chicken
 
@@ -202,6 +242,7 @@ while True:
             window[f'-LISTEN{layout_num}-'].update(visible=False)
             layout_num = 4
             window[f'-LISTEN{layout_num}-'].update(visible=True)
+
 
         elif event[1] in eh.ALLOWED_QTY:
             temp_qty = eh.ALLOWED_QTY.index(event[1]) + 1
@@ -239,7 +280,8 @@ while True:
             # RONWALDO UPDATE MO UI HERE
             window['-LISTEN1-'].update("change to speech 12 gui (see figma for ref)") # TEMPORARY FOR CHECKING, DELETE WHEN UI UPDATED
 
-            window.start_thread(lambda: eh.start_assist(window, eh.VIEW_ORDER, 10, 'ORDER ACTION'), ('-THREAD-', '-THREAD ENDED-'))
+            timeout = len(cart.keys()) + 10
+            window.start_thread(lambda: eh.start_assist(window, eh.get_cart_list(cart), timeout, 'ORDER ACTION'), ('-THREAD-', '-THREAD ENDED-'))
             
             window[f'-LISTEN{layout_num}-'].update(visible=False)
             layout_num = 5
@@ -254,9 +296,15 @@ while True:
 
 
         elif event[1] == "MODIFY":
-            # HELLO GEO
-            pass
-            
+            window['-LISTEN1-'].update("change to speech 12 gui (see figma for ref)") # TEMPORARY FOR CHECKING, DELETE WHEN UI UPDATED
+        
+            window.start_thread(lambda: eh.modify_order(window, cart), ('-MODIFY THREAD-', '-MODIFY THREAD ENDED-'))
+
+
+        elif event[1] == "MODIFY OPTION":
+            window.start_thread(lambda: eh.get_command(window, "CHANGE", "DELETE"), ('-THREAD-', '-THREAD ENDED-'))
+            window['-LISTEN1-'].update("Listening...")
+
         
         elif event[1] == "CHECKOUT":
             # HELLO GEO
@@ -282,6 +330,9 @@ while True:
 
         elif event[1] == "EXIT APP":
             break
+
+
+        
 
 
     elif event == '-TEXT-':
