@@ -8,7 +8,7 @@ othermeals = [menu.burger, menu.fries]
 
 
 # data to be manipulated
-cart = {} #format {menu.item1: qty, menu.item2: qty}
+cart = {menu.chicken: 1} #format {menu.item1: qty, menu.item2: qty}
 temp_item = None
 temp_qty = 0
 
@@ -30,23 +30,82 @@ tab5 = sg.Tab('Tab 5', layout_tab5, title_color='green', pad=(50, 50), backgroun
 tab_group_layout = [[tab1, tab2, tab3, tab4, tab5]]
 
 tab_group = sg.TabGroup(tab_group_layout, tab_location='left', title_color='white', size=(400, 525), pad= 25, background_color=('#FF6500'))
-order_menu_layout = [[sg.Text(text="Pick a Category", expand_x=True, justification='center',  background_color=('#C40C0C'))],
-                     [sg.Column([[tab_group]], background_color='#C40C0C')]]
 
+order_menu_layout = [[sg.Text(text="Pick a Category", 
+                    expand_x=True,
+                    justification='center',
+                    background_color=('#C40C0C'))],
+                    [sg.Column([[tab_group]], background_color='#C40C0C')]]
+
+#-LISTEN2-
+dine_take_layout = [[sg.Text(text="Dine-in or Take-out", 
+                    expand_x=True,
+                    justification='center',
+                    background_color=('#C40C0C'))],
+                    [sg.Button('DINE OR TAKE',
+                    font=('Calibri', 15), 
+                    expand_x=True, 
+                    key = ('-THREAD-', 'DINE OR TAKE'),
+                    enable_events=True)]
+                    ]
+
+ask_qty_layout = [[sg.Text(text="How many?", 
+                    expand_x=True,
+                    justification='center',
+                    background_color=('#C40C0C'))],
+                    ]
+
+cart_layout = [[sg.Text(text="Cart", 
+                    expand_x=True,
+                    justification='center',
+                    background_color=('#C40C0C'))],
+                    ]
+
+checkout_layout = [[sg.Text(text="Dine-in or Take-out", 
+                    expand_x=True,
+                    justification='center',
+                    background_color=('#C40C0C'))],
+                    ]
 
 #Layout for speech 1
 speech1_layout = [[]]
 
 
 home_layout = [
-    [sg.Text(text="Hello", font=('Calibri', 20), expand_x=True, background_color=('#C40C0C'), colors='#F7EEDD', justification='center', enable_events=True , key='-TEXT-')],
-    [sg.Image(filename='images\\home.png', size=(0,425))],
-    [sg.Text(text="Tap anywhere to start", font=('Calibri', 15), expand_x=True, background_color=('#C40C0C'), justification='center')],
-    [sg.Text(text="or Say \"Start Order\" for Speech Option", font=('Calibri', 15), expand_x=True, background_color=('#C40C0C'), justification='center')],
-    [sg.Text(text="", font=('Calibri', 15), expand_x=True, background_color=('#C40C0C'), justification='center')],
+    [sg.Text(text="Hello", 
+             font=('Calibri', 20), 
+             expand_x=True, 
+             background_color=('#C40C0C'), 
+             colors='#F7EEDD', 
+             justification='center', 
+             enable_events=True , 
+             key='-TEXT-')],
+    [sg.Image(filename='images/home.png',
+              size=(0,425))],
+    [sg.Button('Start Order',
+             font=('Calibri', 15), 
+             expand_x=True, 
+             key = ('-THREAD-', 'CHECKOUT'),
+             enable_events=True)],
+    [sg.Text(text="or Say \"Start Order\" for Speech Option", 
+             font=('Calibri', 15), 
+             expand_x=True, 
+             background_color=('#C40C0C'), 
+             justification='center')],
+    [sg.Text(text="", font=('Calibri', 15), 
+             expand_x=True, 
+             background_color=('#C40C0C'),
+             justification='center')],
 ]
 
-main_layout = [[sg.Column(home_layout, key= '-LISTEN1-'), sg.Column(order_menu_layout, visible=False, key='-LISTEN2-')]]
+main_layout = [
+            [sg.Column(home_layout, key= '-LISTEN1-'), 
+             sg.Column(dine_take_layout, visible=False, key='-LISTEN2-'),
+             sg.Column(order_menu_layout, visible=False, key='-LISTEN3-'),
+             sg.Column(ask_qty, visible=False, key='-LISTEN4-'),
+             sg.Column(cart, visible=False, key='-LISTEN5-'),
+             sg.Column(checkout, visible=False, key='-LISTEN6-'),
+             ]]
 
     
 sg.theme_background_color('#C40C0C')
@@ -105,7 +164,7 @@ while True:
             window.start_thread(lambda: eh.get_command(window, "START ORDER"), ('-THREAD-', '-THREAD ENDED-'))
             window['-LISTEN1-'].update("Listening...")
     
-        elif event[1] == 'START ORDER':
+        elif event[1] == 'START ORDER' or event == 'START ORDER':
             # RONWALDO UPDATE MO UI HERE
             window[f'-LISTEN{layout_num}-'].update(visible=False)
             layout_num = 2
@@ -118,7 +177,9 @@ while True:
 
         elif event[1] == 'DINE IN' or event[1] == 'TAKE OUT':
             # RONWALDO UPDATE MO UI HERE
-            window['-LISTEN1-'].update("change to speech 4 gui (see figma for ref)") # TEMPORARY FOR CHECKING, DELETE WHEN UI UPDATED
+            window[f'-LISTEN{layout_num}-'].update(visible=False)
+            layout_num = 3
+            window[f'-LISTEN{layout_num}-'].update(visible=True) # TEMPORARY FOR CHECKING, DELETE WHEN UI UPDATED
 
             window.start_thread(lambda: eh.start_assist(window, eh.CONFIRM_CHOICE + event[1] + "." + eh.CATEGORIES, 11, 'CATEGORY'), ('-THREAD-', '-THREAD ENDED-'))
 
@@ -178,14 +239,16 @@ while True:
 
         elif event[1] == "ASK QTY":
             window.start_thread(lambda: eh.get_command(window, *eh.ALLOWED_QTY), ('-THREAD-', '-THREAD ENDED-'))
-            window['-LISTEN1-'].update("Listening...")
+            window[f'-LISTEN{layout_num}-'].update(visible=False)
+            layout_num = 4
+            window[f'-LISTEN{layout_num}-'].update(visible=True)
 
 
         elif event[1] in eh.ALLOWED_QTY:
             temp_qty = eh.ALLOWED_QTY.index(event[1]) + 1
 
             # RONWALDO UPDATE MO UI HERE
-            window['-LISTEN1-'].update(f"speech 11: {event[1]}") # TEMPORARY FOR CHECKING, DELETE WHEN UI UPDATED
+            # TEMPORARY FOR CHECKING, DELETE WHEN UI UPDATED
             
             window.start_thread(lambda: eh.start_assist(window, eh.CONFIRM_ITEM, 5, 'CONFIRM ITEM'), ('-THREAD-', '-THREAD ENDED-'))
 
@@ -220,6 +283,12 @@ while True:
             timeout = len(cart.keys()) + 10
             window.start_thread(lambda: eh.start_assist(window, eh.get_cart_list(cart), timeout, 'ORDER ACTION'), ('-THREAD-', '-THREAD ENDED-'))
             
+            window[f'-LISTEN{layout_num}-'].update(visible=False)
+            layout_num = 5
+            window[f'-LISTEN{layout_num}-'].update(visible=True)
+            
+            
+            
 
         elif event[1] == "ORDER ACTION":
             window.start_thread(lambda: eh.get_command(window, "MODIFY", "CHECKOUT", "EXIT", "BACK"), ('-THREAD-', '-THREAD ENDED-'))
@@ -239,6 +308,8 @@ while True:
         
         elif event[1] == "CHECKOUT":
             # HELLO GEO
+            window.start_thread(lambda: eh.prompt_check_out_menu(cart, window),('-THREAD-', '-THREAD ENDED-'))
+            window[f'-LISTEN1-'].update("GAGO")
             pass
         
         
