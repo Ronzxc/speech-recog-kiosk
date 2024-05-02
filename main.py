@@ -8,7 +8,11 @@ othermeals = [menu.burger, menu.fries]
 
 
 # data to be manipulated
+<<<<<<< HEAD
 cart = {menu.chicken: 2, menu.burgersteak: 1 } #format {menu.item1: qty, menu.item2: qty}
+=======
+cart = {menu.chicken: 1} #format {menu.item1: qty, menu.item2: qty}
+>>>>>>> gui
 temp_item = None
 temp_qty = 0
 
@@ -244,7 +248,11 @@ while True:
         elif event[1] == "CHECKOUT":
             # HELLO GEO
             window.start_thread(lambda: eh.prompt_check_out_menu(cart, window),('-THREAD-', '-THREAD ENDED-'))
+<<<<<<< HEAD
             window[f'-LISTEN2-'].update("GAGO")
+=======
+            window[f'-LISTEN1-'].update("GAGO")
+>>>>>>> gui
             pass
         
         
