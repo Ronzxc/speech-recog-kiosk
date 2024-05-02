@@ -14,22 +14,22 @@ temp_qty = 0
 
 
 #Layout for order menu
-layout_tab1 = [[sg.Text('Content for Tab 1', background_color=('#FF6500'))]]
+layout_tab1 = [[sg.Text('Content for Tab 1', background_color=('#FF6500'))],
+               [sg.Column([
+        [sg.Image(filename=menu.chicken[1], size=(75, 75), pad=10), sg.Image(filename=menu.chicken[1], size=(75, 75))],
+        [sg.Image(filename=menu.chicken[1], size=(75, 75), pad=10), sg.Image(filename=menu.chicken[1], size=(75, 75))]
+    ], justification='center', background_color='#FFC100')]]
 layout_tab2 = [[sg.Text('Content for Tab 2', background_color=('#FF6500'))]]
-layout_tab3 = [[sg.Text('Content for Tab 3', background_color=('#FF6500'))]]
-layout_tab4 = [[sg.Text('Content for Tab 4', background_color=('#FF6500'))]]
-layout_tab5 = [[sg.Text('Content for Tab 5', background_color=('#FF6500'))]]
-
-tab1 = sg.Tab('Tab 1', layout_tab1, title_color='red', pad=(50, 50), background_color=('#FF6500'))
-tab2 = sg.Tab('Tab 2', layout_tab2, title_color='green', pad=(50, 50), background_color=('#FF6500'))
-tab3 = sg.Tab('Tab 3', layout_tab3, title_color='blue', pad=(50, 50), background_color=('#FF6500'))
-tab4 = sg.Tab('Tab 4', layout_tab4, title_color='red', pad=(50, 50), background_color=('#FF6500'))
-tab5 = sg.Tab('Tab 5', layout_tab5, title_color='green', pad=(50, 50), background_color=('#FF6500'))
 
 
-tab_group_layout = [[tab1, tab2, tab3, tab4, tab5]]
+tab1 = sg.Tab('RICEMEALS', layout_tab1, title_color='red', background_color=('#FF6500'))
+tab2 = sg.Tab('OTHERMEALS', layout_tab2, title_color='green', background_color=('#FF6500'))
 
-tab_group = sg.TabGroup(tab_group_layout, tab_location='left', title_color='white', size=(400, 525), pad= 25, background_color=('#FF6500'))
+
+
+tab_group_layout = [[tab1, tab2]]
+
+tab_group = sg.TabGroup(tab_group_layout, tab_location='left', title_color='white', size=(400, 525), pad= 10, background_color=('#FF6500'))
 
 order_menu_layout = [[sg.Text(text="Pick a Category", 
                     expand_x=True,
@@ -49,19 +49,43 @@ dine_take_layout = [[sg.Text(text="Dine-in or Take-out",
                     enable_events=True)]
                     ]
 
-ask_qty = [[sg.Text(text="How many?", 
+modify_layout = [[sg.Text(text="Modify your order", 
                     expand_x=True,
                     justification='center',
                     background_color=('#C40C0C'))],
                     ]
 
-cart = [[sg.Text(text="Cart", 
+confirm_layout = [[sg.Text(text="Confirm Delete", 
                     expand_x=True,
                     justification='center',
                     background_color=('#C40C0C'))],
                     ]
 
-checkout = [[sg.Text(text="Check-out", 
+check_order_layout = [[sg.Text(text="Check your Order before we proceed", 
+                    expand_x=True,
+                    justification='center',
+                    background_color=('#C40C0C'))],
+                    ]
+
+processed_layout = [[sg.Text(text="Your order have been processed", 
+                    expand_x=True,
+                    justification='center',
+                    background_color=('#C40C0C'))],
+                    ]
+
+ask_qty_layout = [[sg.Text(text="How many?", 
+                    expand_x=True,
+                    justification='center',
+                    background_color=('#C40C0C'))],
+                    ]
+
+cart_layout = [[sg.Text(text="Cart", 
+                    expand_x=True,
+                    justification='center',
+                    background_color=('#C40C0C'))],
+                    ]
+
+checkout_layout = [[sg.Text(text="Check-out", 
                     expand_x=True,
                     justification='center',
                     background_color=('#C40C0C'))],
@@ -102,9 +126,9 @@ main_layout = [
             [sg.Column(home_layout, key= '-LISTEN1-'), 
              sg.Column(dine_take_layout, visible=False, key='-LISTEN2-'),
              sg.Column(order_menu_layout, visible=False, key='-LISTEN3-'),
-             sg.Column(ask_qty, visible=False, key='-LISTEN4-'),
+             sg.Column(ask_qty_layout, visible=False, key='-LISTEN4-'),
              sg.Column(cart, visible=False, key='-LISTEN5-'),
-             sg.Column(checkout, visible=False, key='-LISTEN6-'),
+             sg.Column(checkout_layout, visible=False, key='-LISTEN6-'),
              ]]
 
     
