@@ -42,5 +42,16 @@ def start_assist(window=None, prompt="Hello", timeout=1, key=None):
     window.write_event_value(('-THREAD-', key), key)
 
 
+def prompt_check_out_menu(cart, window=None):
+    orders = ""
+    for keys, value in cart.items():
+        orders = orders + f" {value} {keys[0]},"
+    # print(orders)
+    # if(cart.size() == 1)
+    if(len(cart.items()) == 1 and list(cart.items())[0][1] == 1):
+        utils.kiosk_prompt(f"Your check out item is: {orders}")
+    else:
+        utils.kiosk_prompt(f"Your check out items are: {orders}")
 
-
+    window.write_event_value(('-CHECKOUT THREAD-', 'DONE CHECKOUT'), 'DONE CHECKOUT')
+    

@@ -8,7 +8,7 @@ othermeals = [menu.burger, menu.fries]
 
 
 # data to be manipulated
-cart = {} #format {menu.item1: qty, menu.item2: qty}
+cart = {menu.chicken: 1} #format {menu.item1: qty, menu.item2: qty}
 temp_item = None
 temp_qty = 0
 
@@ -43,19 +43,19 @@ dine_take_layout = [[sg.Text(text="Dine-in or Take-out",
                     background_color=('#C40C0C'))],
                     ]
 
-ask_qty = [[sg.Text(text="How many?", 
+ask_qty_layout = [[sg.Text(text="How many?", 
                     expand_x=True,
                     justification='center',
                     background_color=('#C40C0C'))],
                     ]
 
-cart = [[sg.Text(text="Cart", 
+cart_layout = [[sg.Text(text="Cart", 
                     expand_x=True,
                     justification='center',
                     background_color=('#C40C0C'))],
                     ]
 
-checkout = [[sg.Text(text="Check-out", 
+checkout_layout = [[sg.Text(text="Dine-in or Take-out", 
                     expand_x=True,
                     justification='center',
                     background_color=('#C40C0C'))],
@@ -79,7 +79,7 @@ home_layout = [
     [sg.Button('Start Order',
              font=('Calibri', 15), 
              expand_x=True, 
-             key = ('-THREAD-', 'START ORDER'),
+             key = ('-THREAD-', 'CHECKOUT'),
              enable_events=True)],
     [sg.Text(text="or Say \"Start Order\" for Speech Option", 
              font=('Calibri', 15), 
@@ -243,6 +243,8 @@ while True:
         
         elif event[1] == "CHECKOUT":
             # HELLO GEO
+            window.start_thread(lambda: eh.prompt_check_out_menu(cart, window),('-THREAD-', '-THREAD ENDED-'))
+            window[f'-LISTEN1-'].update("GAGO")
             pass
         
         
