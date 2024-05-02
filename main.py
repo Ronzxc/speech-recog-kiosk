@@ -39,11 +39,30 @@ speech1_layout = [[]]
 
 
 home_layout = [
-    [sg.Text(text="Hello", font=('Calibri', 20), expand_x=True, background_color=('#C40C0C'), colors='#F7EEDD', justification='center', enable_events=True , key='-TEXT-')],
-    [sg.Image(filename='images\\home.png', size=(0,425))],
-    [sg.Text(text="Tap anywhere to start", font=('Calibri', 15), expand_x=True, background_color=('#C40C0C'), justification='center')],
-    [sg.Text(text="or Say \"Start Order\" for Speech Option", font=('Calibri', 15), expand_x=True, background_color=('#C40C0C'), justification='center')],
-    [sg.Text(text="", font=('Calibri', 15), expand_x=True, background_color=('#C40C0C'), justification='center')],
+    [sg.Text(text="Hello", 
+             font=('Calibri', 20), 
+             expand_x=True, 
+             background_color=('#C40C0C'), 
+             colors='#F7EEDD', 
+             justification='center', 
+             enable_events=True , 
+             key='-TEXT-')],
+    [sg.Image(filename='images/home.png',
+              size=(0,425))],
+    [sg.Button('Start Order',
+             font=('Calibri', 15), 
+             expand_x=True, 
+             key = ('-THREAD-', 'START ORDER'),
+             enable_events=True)],
+    [sg.Text(text="or Say \"Start Order\" for Speech Option", 
+             font=('Calibri', 15), 
+             expand_x=True, 
+             background_color=('#C40C0C'), 
+             justification='center')],
+    [sg.Text(text="", font=('Calibri', 15), 
+             expand_x=True, 
+             background_color=('#C40C0C'),
+             justification='center')],
 ]
 
 main_layout = [[sg.Column(home_layout, key= '-LISTEN1-'), sg.Column(order_menu_layout, visible=False, key='-LISTEN2-')]]
@@ -65,7 +84,7 @@ while True:
             window.start_thread(lambda: eh.get_command(window, "START ORDER"), ('-THREAD-', '-THREAD ENDED-'))
             window['-LISTEN1-'].update("Listening...")
     
-        elif event[1] == 'START ORDER':
+        elif event[1] == 'START ORDER' or event == 'START ORDER':
             # RONWALDO UPDATE MO UI HERE
             window[f'-LISTEN{layout_num}-'].update(visible=False)
             layout_num = 2
