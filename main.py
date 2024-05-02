@@ -61,7 +61,7 @@ cart_layout = [[sg.Text(text="Cart",
                     background_color=('#C40C0C'))],
                     ]
 
-checkout_layout = [[sg.Text(text="Dine-in or Take-out", 
+checkout_layout = [[sg.Text(text="CHECKOUT", 
                     expand_x=True,
                     justification='center',
                     background_color=('#C40C0C'))],
@@ -102,9 +102,9 @@ main_layout = [
             [sg.Column(home_layout, key= '-LISTEN1-'), 
              sg.Column(dine_take_layout, visible=False, key='-LISTEN2-'),
              sg.Column(order_menu_layout, visible=False, key='-LISTEN3-'),
-             sg.Column(ask_qty, visible=False, key='-LISTEN4-'),
-             sg.Column(cart, visible=False, key='-LISTEN5-'),
-             sg.Column(checkout, visible=False, key='-LISTEN6-'),
+             sg.Column(ask_qty_layout, visible=False, key='-LISTEN4-'),
+             sg.Column(cart_layout, visible=False, key='-LISTEN5-'),
+             sg.Column(checkout_layout, visible=False, key='-LISTEN6-'),
              ]]
 
     
@@ -309,10 +309,19 @@ while True:
         elif event[1] == "CHECKOUT":
             # HELLO GEO
             window.start_thread(lambda: eh.prompt_check_out_menu(cart, window),('-THREAD-', '-THREAD ENDED-'))
-            window[f'-LISTEN1-'].update("GAGO")
-            pass
+            window[f'-LISTEN{layout_num}-'].update(visible=False)
+            layout_num = 6
+            window[f'-LISTEN{layout_num}-'].update(visible=True) # TEMPORARY FOR CHECKING, DELETE WHEN UI UPDATED
+
+            window.start_thread(lambda: eh.get_command(window, "START ORDER"), ('-THREAD-', '-THREAD ENDED-'))
         
         
+        elif event[1] == "DONE CHECKOUT":
+            window.start_thread(lambda: eh.get_command(window, "CONFIRM ORDER", "BACK"), ('-THREAD-', '-THREAD ENDED-'))
+            
+        elif event[1] == "CONFIRM ORDER":
+            window.start_thread(lambda: eh.start_assist(window, eh.FINISHED_CHECKOUT, 10, 'EXIT_APP'), ('-THREAD-', '-THREAD ENDED-'))
+            
         elif event[1] == "EXIT":
             # RONWALDO UPDATE MO UI HERE
             window['-LISTEN1-'].update("change to speech 20 gui (see figma for ref)") # TEMPORARY FOR CHECKING, DELETE WHEN UI UPDATED
