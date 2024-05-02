@@ -64,7 +64,7 @@ checkout_layout = [[sg.Text(text="Dine-in or Take-out",
 #Layout for speech 1
 speech1_layout = [[]]
 
-j
+
 home_layout = [
     [sg.Text(text="Hello", 
              font=('Calibri', 20), 
