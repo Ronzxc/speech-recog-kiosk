@@ -16,10 +16,12 @@ temp_qty = 0
 #Layout for order menu
 layout_tab1 = [[sg.Text('Content for Tab 1', background_color=('#FF6500'))],
                [sg.Column([
-        [sg.Image(filename=menu.chicken[1], size=(75, 75), pad=10), sg.Image(filename=menu.chicken[1], size=(75, 75))],
-        [sg.Image(filename=menu.chicken[1], size=(75, 75), pad=10), sg.Image(filename=menu.chicken[1], size=(75, 75))]
+        [sg.Image(filename=menu.chicken[1], size=(75, 75), pad=10), sg.Image(filename=menu.burgersteak[1], size=(75, 75))]
     ], justification='center', background_color='#FFC100')]]
-layout_tab2 = [[sg.Text('Content for Tab 2', background_color=('#FF6500'))]]
+layout_tab2 = [[sg.Text('Content for Tab 2', background_color=('#FF6500'))],
+               [sg.Column([
+        [sg.Image(filename=menu.burger[1], size=(75, 75), pad=10), sg.Image(filename=menu.fries[1], size=(75, 75))]
+    ], justification='center', background_color='#FFC100')]]
 
 
 tab1 = sg.Tab('RICEMEALS', layout_tab1, title_color='red', background_color=('#FF6500'))
@@ -46,7 +48,9 @@ dine_take_layout = [[sg.Text(text="Dine-in or Take-out",
                     font=('Calibri', 15), 
                     expand_x=True, 
                     key = ('-THREAD-', 'DINE OR TAKE'),
-                    enable_events=True)]
+                    enable_events=True)],
+                    [sg.Image(filename='images/home.png',
+              size=(0,425))],
                     ]
 
 modify_layout = [[sg.Text(text="Modify your order", 
