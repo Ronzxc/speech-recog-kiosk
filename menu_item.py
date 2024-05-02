@@ -4,4 +4,4 @@ burgersteak = ("Burger Steak", "images\\burgersteak.png")
 
 # others
 burger = ("Cheese Burger", "images\\burger.png")
-fries = ("Fries", "images\\fries.png")
+fries = ("French Fries", "images\\fries.png")
