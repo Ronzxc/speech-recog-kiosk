@@ -30,9 +30,36 @@ tab5 = sg.Tab('Tab 5', layout_tab5, title_color='green', pad=(50, 50), backgroun
 tab_group_layout = [[tab1, tab2, tab3, tab4, tab5]]
 
 tab_group = sg.TabGroup(tab_group_layout, tab_location='left', title_color='white', size=(400, 525), pad= 25, background_color=('#FF6500'))
-order_menu_layout = [[sg.Text(text="Pick a Category", expand_x=True, justification='center',  background_color=('#C40C0C'))],
-                     [sg.Column([[tab_group]], background_color='#C40C0C')]]
 
+order_menu_layout = [[sg.Text(text="Pick a Category", 
+                    expand_x=True,
+                    justification='center',
+                    background_color=('#C40C0C'))],
+                    [sg.Column([[tab_group]], background_color='#C40C0C')]]
+
+dine_take_layout = [[sg.Text(text="Dine-in or Take-out", 
+                    expand_x=True,
+                    justification='center',
+                    background_color=('#C40C0C'))],
+                    ]
+
+ask_qty = [[sg.Text(text="How many?", 
+                    expand_x=True,
+                    justification='center',
+                    background_color=('#C40C0C'))],
+                    ]
+
+cart = [[sg.Text(text="Cart", 
+                    expand_x=True,
+                    justification='center',
+                    background_color=('#C40C0C'))],
+                    ]
+
+checkout = [[sg.Text(text="Check-out", 
+                    expand_x=True,
+                    justification='center',
+                    background_color=('#C40C0C'))],
+                    ]
 
 #Layout for speech 1
 speech1_layout = [[]]
@@ -65,7 +92,13 @@ home_layout = [
              justification='center')],
 ]
 
-main_layout = [[sg.Column(home_layout, key= '-LISTEN1-'), sg.Column(order_menu_layout, visible=False, key='-LISTEN2-')]]
+main_layout = [[sg.Column(home_layout, key= '-LISTEN1-'), 
+             sg.Column(order_menu_layout, visible=False, key='-LISTEN2-'),
+             sg.Button('DINE OR TAKE',
+             font=('Calibri', 15), 
+             expand_x=True, 
+             key = ('-THREAD-', 'DINE OR TAKE'),
+             enable_events=True)]]
 
     
 sg.theme_background_color('#C40C0C')
