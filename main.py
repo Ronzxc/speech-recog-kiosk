@@ -40,24 +40,8 @@ order_menu_layout = [[sg.Text(text="Pick a Category",
                     [sg.Column([[tab_group]], background_color='#FF6500')]]
 
 #-LISTEN2-
-dine_take_layout = [[sg.Text(text="Dine-in or Take-out", 
-                    expand_x=True,
-                    justification='center',
-                    background_color=('#C40C0C'))],
-                    [sg.Button('DINE IN',
-                    font=('Calibri', 15), 
-                    expand_x=True, 
-                    button_color=('#C40C0C'),
-                    key = ('-THREAD-', 'DINE OR TAKE'),
-                    enable_events=True)],
-                    [sg.Button('TAKE OUT',
-                    font=('Calibri', 15), 
-                    expand_x=True, 
-                    button_color=('#C40C0C'),
-                    key = ('-THREAD-', 'DINE OR TAKE'), 
-                    enable_events=True)],
-                    [sg.Image(filename='images/bini.png', 
-              size=(0,525))],
+dine_take_layout = [[sg.Image(filename='images/bini.png', 
+              size=(0,525))]
                     ]
 
 
@@ -125,8 +109,7 @@ home_layout = [
              font=('Calibri', 15), 
              expand_x=True,
              button_color=('#C40C0C'),
-             key = ('-THREAD-', 'START ORDER'),
-             enable_events=True)],
+             enable_events=False)],
     [sg.Text(text="or Say \"Start Order\" for Speech Option", 
              font=('Calibri', 15), 
              expand_x=True, 
@@ -142,9 +125,9 @@ main_layout = [
             [sg.Column(home_layout, key= '-HOME_LAYOUT-'), 
              sg.Column(dine_take_layout, visible=False, key='-DINE_TAKE_LAYOUT-'),
              sg.Column(order_menu_layout, visible=False, key='-ORDER_MENU_LAYOUT-'),
-             sg.Column(ask_qty_layout, visible=False, key='-ASK_QTY_LAYOUT'),
+             sg.Column(ask_qty_layout, visible=False, key='-ASK_QTY_LAYOUT-'),
              sg.Column(cart_layout, visible=False, key='-CART_LAYOUT-'),
-             sg.Column(check_order_layout, visible=False, key='-CHECK_ORDER_LAYOUT-'),
+             sg.Column(check_order_layout, visible=False, key='-CHECKOUT_LAYOUT-'),
              sg.Column(processed_layout, visible=False, key='-PROCESSED_LAYOUT-'),
              sg.Column(confirm_layout, visible=False, key='-CONFIRM_LAYOUT-'),
              sg.Column(modify_layout, visible=False, key='-MODIFY_LAYOUT-'),
@@ -200,7 +183,7 @@ while True:
             window.start_thread(lambda: eh.get_command(window, "START ORDER"), ('-THREAD-', '-THREAD ENDED-'))
             window['-HOME_LAYOUT-'].update(visible = True)
     
-        elif event[1] == 'START ORDER' or event == 'START ORDER':
+        elif event[1] == 'START ORDER':
             # RONWALDO UPDATE MO UI HERE
             window[f'-HOME_LAYOUT-'].update(visible=False)
             layout_num = 2
@@ -250,27 +233,27 @@ while True:
 
                 # RONWALDO UPDATE MO UI HERE
                 window['-ORDER_MENU_LAYOUT-'].update(visible=False)
-                window['-ASK_QTY_LAYOUT'].update(visible = True) # TEMPORARY FOR CHECKING, DELETE WHEN UI UPDATED
+                window['-ASK_QTY_LAYOUT-'].update(visible = True) # TEMPORARY FOR CHECKING, DELETE WHEN UI UPDATED
 
             elif event[1] == "BURGER":
                 temp_item = menu.burgersteak
 
                 # RONWALDO UPDATE MO UI HERE
                 window['-ORDER_MENU_LAYOUT-'].update(visible=False)
-                window['-ASK_QTY_LAYOUT'].update(visible = True) # TEMPORARY FOR CHECKING, DELETE WHEN UI UPDATED
+                window['-ASK_QTY_LAYOUT-'].update(visible = True) # TEMPORARY FOR CHECKING, DELETE WHEN UI UPDATED
             
             elif event[1] == "FRIES":
                 temp_item = menu.fries
 
                 # RONWALDO UPDATE MO UI HERE
                 window['-ORDER_MENU_LAYOUT-'].update(visible=False)
-                window['-ASK_QTY_LAYOUT'].update(visible = True) # TEMPORARY FOR CHECKING, DELETE WHEN UI UPDATED
+                window['-ASK_QTY_LAYOUT-'].update(visible = True) # TEMPORARY FOR CHECKING, DELETE WHEN UI UPDATED
 
             elif event[1] == "CHEESE":
                 temp_item = menu.burger
 
                 window['-ORDER_MENU_LAYOUT-'].update(visible=False)
-                window['-ASK_QTY_LAYOUT'].update(visible = True) # TEMPORARY FOR CHECKING, DELETE WHEN UI UPDATED
+                window['-ASK_QTY_LAYOUT-'].update(visible = True) # TEMPORARY FOR CHECKING, DELETE WHEN UI UPDATED
 
             window.start_thread(lambda: eh.start_assist(window, eh.ASK_QTY, 3, 'ASK QTY'), ('-THREAD-', '-THREAD ENDED-'))
 
@@ -330,7 +313,7 @@ while True:
             
 
         elif event[1] == "ORDER ACTION":
-            window.start_thread(lambda: eh.get_command(window, "MODIFY", "CHECKOUT", "EXIT", "BACK"), ('-THREAD-', '-THREAD ENDED-'))
+            window.start_thread(lambda: eh.get_command(window, "MODIFY", "CHECK OUT", "EXIT", "BACK"), ('-THREAD-', '-THREAD ENDED-'))
             window['-CART_LAYOUT-'].update("Listening...")
 
 
@@ -358,7 +341,7 @@ while True:
             window.start_thread(lambda: eh.start_assist(window, eh.ITEM_DELETE, 3, 'NO'), ('-THREAD-', '-THREAD ENDED-'))
             window['-MODIFY_LAYOUT-'].update("Listening...")
 
-        elif event[1] == "CHECKOUT":
+        elif event[1] == "CHECK OUT":
             # HELLO GEO
             window[f'-CART_LAYOUT-'].update(visible=False)
             window[f'-CHECKOUT_LAYOUT-'].update(visible=True) # TEMPORARY FOR CHECKING, DELETE WHEN UI UPDATED
@@ -373,18 +356,20 @@ while True:
         elif event[1] == "CONFIRM ORDER":
             window[f'-CHECKOUT_LAYOUT-'].update(visible=False) # TEMPORARY FOR CHECKING, DELETE WHEN UI UPDATED
             window[f'-DINE_TAKE_LAYOUT-'].update(visible=True) # TEMPORARY FOR CHECKING, DELETE WHEN UI UPDATED
-            window.start_thread(lambda: eh.start_assist(window, eh.FINISHED_CHECKOUT, 10, 'EXIT_APP'), ('-THREAD-', '-THREAD ENDED-'))
+            window.start_thread(lambda: eh.start_assist(window, eh.FINISHED_CHECKOUT, 10, 'FINISHED ORDER'), ('-THREAD-', '-THREAD ENDED-'))
             
         elif event[1] == "EXIT":
             # RONWALDO UPDATE MO UI HERE
             window[f'-CART_LAYOUT-'].update(visible=False) # TEMPORARY FOR CHECKING, DELETE WHEN UI UPDATED
-            window[f'-DINE_TAKE_LAYOUT-'].update(visible=False) # TEMPORARY FOR CHECKING, DELETE WHEN UI UPDATED
+            window[f'-DINE_TAKE_LAYOUT-'].update(visible=True) # TEMPORARY FOR CHECKING, DELETE WHEN UI UPDATED
 
             window.start_thread(lambda: eh.start_assist(window, eh.EXIT_APP, 6, 'EXIT APP'), ('-THREAD-', '-THREAD ENDED-'))
 
-        elif event[1] == "EXIT APP":
-            break
-
+        elif event[1] == "EXIT APP" or event[1] == "FINISHED ORDER":
+            window[f'-DINE_TAKE_LAYOUT-'].update(visible=False) # TEMPORARY FOR CHECKING, DELETE WHEN UI UPDATED
+            window[f'-HOME_LAYOUT-'].update(visible=True) # TEMPORARY FOR CHECKING, DELETE WHEN UI UPDATED
+            window.start_thread(lambda: eh.start_assist(window, eh.START_PROMPT, 5, 'DONE START'), ('-THREAD-', '-THREAD ENDED-'))
+            
 
         
 
