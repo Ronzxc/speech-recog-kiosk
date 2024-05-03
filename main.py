@@ -300,6 +300,7 @@ while True:
             window['-ASK_QTY_LAYOUT-'].update(visible=False) # TEMPORARY FOR CHECKING, DELETE WHEN UI UPDATED
             window['-CHECKOUT_LAYOUT-'].update(visible=False) # TEMPORARY FOR CHECKING, DELETE WHEN UI UPDATED
             window['-CART_LAYOUT-'].update(visible=False) # TEMPORARY FOR CHECKING, DELETE WHEN UI UPDATED
+            window['-MODIFY_LAYOUT-'].update(visible=False) # TEMPORARY FOR CHECKING, DELETE WHEN UI UPDATED
             window['-ORDER_MENU_LAYOUT-'].update(visible=True) # TEMPORARY FOR CHECKING, DELETE WHEN UI UPDATED
 
             
@@ -346,16 +347,16 @@ while True:
 
         elif event[1] == "DELETE":
             window.start_thread(lambda: eh.start_assist(window, eh.CONFIRM_DELETE, 10, 'CONFIRM DELETE'), ('-THREAD-', '-THREAD ENDED-'))
-
+            window['-MODIFY_LAYOUT-'].update("Listening...")
 
         elif event[1] == "CONFIRM DELETE":
             window.start_thread(lambda: eh.get_command(window, "YES", "NO"), ('-THREAD-', '-THREAD ENDED-'))
-
+            window['-MODIFY_LAYOUT-'].update("Listening...")
         
         elif event[1] == "YES":
             cart.pop(temp_item)
             window.start_thread(lambda: eh.start_assist(window, eh.ITEM_DELETE, 3, 'NO'), ('-THREAD-', '-THREAD ENDED-'))
-            
+            window['-MODIFY_LAYOUT-'].update("Listening...")
 
         elif event[1] == "CHECKOUT":
             # HELLO GEO
