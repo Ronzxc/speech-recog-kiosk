@@ -37,8 +37,13 @@ order_menu_layout = [[sg.Text(text="Pick a Category",
                     expand_x=True,
                     justification='center',
                     background_color=('#C40C0C'))],
-                    [sg.Column([[tab_group]], background_color='#FF6500')]]
-
+                    [sg.Column([[tab_group]], background_color='#FF6500')],
+                    [sg.Button('CART',
+                    font=('Calibri', 15), 
+                    expand_x=True, 
+                    button_color=('#C40C0C'),
+                    key = ('-THREAD-', 'VIEW ORDERS'),
+                    enable_events=True)]]
 #-LISTEN2-
 dine_take_layout = [[sg.Text(text="Dine-in or Take-out", 
                     expand_x=True,
@@ -48,16 +53,16 @@ dine_take_layout = [[sg.Text(text="Dine-in or Take-out",
                     font=('Calibri', 15), 
                     expand_x=True, 
                     button_color=('#C40C0C'),
-                    key = ('-THREAD-', 'DINE OR TAKE'),
+                    key = ('-THREAD-', 'DINE IN'),
                     enable_events=True)],
                     [sg.Button('TAKE OUT',
                     font=('Calibri', 15), 
                     expand_x=True, 
                     button_color=('#C40C0C'),
-                    key = ('-THREAD-', 'DINE OR TAKE'), 
+                    key = ('-THREAD-', 'TAKE OUT'), 
                     enable_events=True)],
                     [sg.Image(filename='images/bini.png', 
-              size=(0,525))],
+                    size=(0,525))],
                     ]
 
 
@@ -75,7 +80,7 @@ confirm_layout = [[sg.Text(text="Confirm Delete",
                     expand_x=True,
                     justification='center',
                     background_color=('#FF8A08'))],
-                  [sg.Frame('', layout=[
+                    [sg.Frame('', layout=[
                             [sg.Text('Content inside the frame', justification='center')],
                             [sg.Button('Button inside the frame')]
                     ], background_color=('#FF6500'), expand_x=True ,size = (400, 525))]
@@ -86,8 +91,13 @@ check_order_layout = [[sg.Text(text="Check your Order before we proceed",
                     justification='center',
                     background_color=('#FF8A08'))],
                     [sg.Frame('', layout=[
-                            [sg.Text('Content inside the frame', justification='center')],
-                            [sg.Button('Button inside the frame')]
+                            [sg.Text('Checkout', justification='center')],
+                    [sg.Button('PROCEED CHECKOUT',
+                    font=('Calibri', 15), 
+                    expand_x=True, 
+                    button_color=('#C40C0C'),
+                    key = ('-THREAD-', 'CONFIRM ORDER'),
+                    enable_events=True)],
                     ], background_color=('#FF6500'), expand_x=True ,size = (400, 525))]
                     ]
 
@@ -122,7 +132,12 @@ cart_layout = [[sg.Text(text="Cart",
                             [sg.Image(filename=menu.chicken[1], size=(75, 75), pad=10), sg.Image(filename=menu.burgersteak[1], size=(75, 75))]
                         ], justification='center', background_color='#FFC100')],
                             [sg.Text('Content inside the frame')],
-                            [sg.Button('Button inside the frame')]
+                    [sg.Button('CHECKOUT',
+                    font=('Calibri', 15), 
+                    expand_x=True, 
+                    button_color=('#C40C0C'),
+                    key = ('-THREAD-', 'CHECKOUT'),
+                    enable_events=True)]
                     ], background_color=('#FF6500'), expand_x=True ,size = (400, 525))]
                     ]
 
@@ -218,7 +233,7 @@ while True:
         elif event[1] == 'START ORDER' or event == 'START ORDER':
             # RONWALDO UPDATE MO UI HERE
             window[f'-HOME_LAYOUT-'].update(visible=False)
-            window[f'-CHECK_ORDER_LAYOUT-'].update(visible=True) # TEMPORARY FOR CHECKING, DELETE WHEN UI UPDATED
+            window[f'-DINE_TAKE_LAYOUT-'].update(visible=True) # TEMPORARY FOR CHECKING, DELETE WHEN UI UPDATED
             window.start_thread(lambda: eh.start_assist(window, eh.WELCOME, 7, 'DINE OR TAKE'), ('-THREAD-', '-THREAD ENDED-'))
             
         elif event[1] == 'DINE OR TAKE':
