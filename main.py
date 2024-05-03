@@ -14,18 +14,18 @@ temp_qty = 0
 
 
 #Layout for order menu
-layout_tab1 = [[sg.Text('Content for Tab 1', background_color=('#FF6500'))],
+layout_tab1 = [[sg.Text('Content for Tab 1', background_color=('#FF8A08'))],
                [sg.Column([
         [sg.Image(filename=menu.chicken[1], size=(75, 75), pad=10), sg.Image(filename=menu.burgersteak[1], size=(75, 75))]
     ], justification='center', background_color='#FFC100')]]
-layout_tab2 = [[sg.Text('Content for Tab 2', background_color=('#FF6500'))],
+layout_tab2 = [[sg.Text('Content for Tab 2', background_color=('#FF8A08'))],
                [sg.Column([
         [sg.Image(filename=menu.burger[1], size=(75, 75), pad=10), sg.Image(filename=menu.fries[1], size=(75, 75))]
     ], justification='center', background_color='#FFC100')]]
 
 
-tab1 = sg.Tab('RICEMEALS', layout_tab1, title_color='red', background_color=('#FF6500'))
-tab2 = sg.Tab('OTHERMEALS', layout_tab2, title_color='green', background_color=('#FF6500'))
+tab1 = sg.Tab('RICEMEALS', layout_tab1, title_color='red', background_color=('#FF8A08'))
+tab2 = sg.Tab('OTHERMEALS', layout_tab2, title_color='green', background_color=('#FF8A08'))
 
 
 
@@ -37,39 +37,46 @@ order_menu_layout = [[sg.Text(text="Pick a Category",
                     expand_x=True,
                     justification='center',
                     background_color=('#C40C0C'))],
-                    [sg.Column([[tab_group]], background_color='#C40C0C')]]
+                    [sg.Column([[tab_group]], background_color='#FF6500')]]
 
 #-LISTEN2-
 dine_take_layout = [[sg.Text(text="Dine-in or Take-out", 
                     expand_x=True,
                     justification='center',
                     background_color=('#C40C0C'))],
-                    [sg.Button('DINE OR TAKE',
+                    [sg.Button('DINE IN',
                     font=('Calibri', 15), 
                     expand_x=True, 
+                    button_color=('#C40C0C'),
                     key = ('-THREAD-', 'DINE OR TAKE'),
                     enable_events=True)],
-                    [sg.Image(filename='images/home.png',
-              size=(0,425))],
+                    [sg.Button('TAKE OUT',
+                    font=('Calibri', 15), 
+                    expand_x=True, 
+                    button_color=('#C40C0C'),
+                    key = ('-THREAD-', 'DINE OR TAKE'), 
+                    enable_events=True)],
+                    [sg.Image(filename='images/bini.png', 
+              size=(0,525))],
                     ]
 
 
 modify_layout = [[sg.Text(text="Modify your order", 
                     expand_x=True,
                     justification='center',
-                    background_color=('#C40C0C'))],
+                    background_color=('#FF8A08'))],
                     ]
 
 confirm_layout = [[sg.Text(text="Confirm Delete", 
                     expand_x=True,
                     justification='center',
-                    background_color=('#C40C0C'))],
+                    background_color=('#FF8A08'))],
                     ]
 
 check_order_layout = [[sg.Text(text="Check your Order before we proceed", 
                     expand_x=True,
                     justification='center',
-                    background_color=('#C40C0C'))],
+                    background_color=('#FF8A08'))],
                     ]
 
 processed_layout = [[sg.Text(text="Your order have been processed", 
@@ -82,13 +89,13 @@ processed_layout = [[sg.Text(text="Your order have been processed",
 ask_qty_layout = [[sg.Text(text="How many?", 
                     expand_x=True,
                     justification='center',
-                    background_color=('#C40C0C'))],
+                    background_color=('#FF8A08'))],
                     ]
 
 cart_layout = [[sg.Text(text="Cart", 
                     expand_x=True,
                     justification='center',
-                    background_color=('#C40C0C'))],
+                    background_color=('#FF8A08'))],
                     ]
 
 
@@ -96,7 +103,7 @@ checkout_layout = [[sg.Text(text="CHECKOUT",
 
                     expand_x=True,
                     justification='center',
-                    background_color=('#C40C0C'))],
+                    background_color=('#FF8A08'))],
                     ]
 
 #Layout for speech 1
@@ -104,7 +111,7 @@ speech1_layout = [[]]
 
 
 home_layout = [
-    [sg.Text(text="Hello", 
+    [sg.Text(text="Hello RotttedBrain!", 
              font=('Calibri', 20), 
              expand_x=True, 
              background_color=('#C40C0C'), 
@@ -116,7 +123,8 @@ home_layout = [
               size=(0,425))],
     [sg.Button('Start Order',
              font=('Calibri', 15), 
-             expand_x=True, 
+             expand_x=True,
+             button_color=('#C40C0C'),
              key = ('-THREAD-', 'CHECKOUT'),
              enable_events=True)],
     [sg.Text(text="or Say \"Start Order\" for Speech Option", 
@@ -126,7 +134,7 @@ home_layout = [
              justification='center')],
     [sg.Text(text="", font=('Calibri', 15), 
              expand_x=True, 
-             background_color=('#C40C0C'),
+             background_color=('#FF8A08'),
              justification='center')],
 ]
 
@@ -142,7 +150,7 @@ main_layout = [
              ]]
 
     
-sg.theme_background_color('#C40C0C')
+sg.theme_background_color('#FF8A08')
 window = sg.Window('Speech \'o Order', main_layout, size=(360, 640))
 
 layout_num = 1
