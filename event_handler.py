@@ -47,13 +47,20 @@ ITEM_DELETE = "Item deleted from cart"
 
 
 
-def get_command(window=None, *args):
+def get_command(window=None, event_queue=None, *args):
     while True:
+        if not event_queue.empty():
+            event = event_queue.get()
+        
         command = str(utils.speech_to_text()).upper()
         print(command.upper())
         if command in args:
             window.write_event_value(('-THREAD-', command), command)
             break
+        if command ==  event:
+            print("FINISH THREAD")
+            break
+
 
 
 def start_assist(window=None, prompt="Hello", timeout=1, key=None):

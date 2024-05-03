@@ -1,5 +1,6 @@
 import PySimpleGUI as sg
 import event_handler as eh
+import queue
 
 # menu
 import menu_item as menu
@@ -11,6 +12,8 @@ othermeals = [menu.burger, menu.fries]
 cart = {menu.chicken: 1} #format {menu.item1: qty, menu.item2: qty}
 temp_item = None
 temp_qty = 0
+
+event_queue = queue.Queue() 
 
 
 #Layout for order menu
@@ -56,7 +59,7 @@ dine_take_layout = [[sg.Text(text="Dine-in or Take-out",
                     button_color=('#C40C0C'),
                     key = ('-THREAD-', 'DINE OR TAKE'), 
                     enable_events=True)],
-                    [sg.Image(filename='images/bini.png', 
+                    [sg.Image(filename='images\\bini.png', 
               size=(0,525))],
                     ]
 
@@ -119,13 +122,13 @@ home_layout = [
              justification='center', 
              enable_events=True , 
              key='-TEXT-')],
-    [sg.Image(filename='images/home.png',
+    [sg.Image(filename='images\\home.png',
               size=(0,425))],
     [sg.Button('Start Order',
              font=('Calibri', 15), 
              expand_x=True,
              button_color=('#C40C0C'),
-             key = ('-THREAD-', 'START ORDER'),
+             key = ('-BUTTON EVENT-', 'START ORDER'),
              enable_events=True)],
     [sg.Text(text="or Say \"Start Order\" for Speech Option", 
              font=('Calibri', 15), 
@@ -142,9 +145,9 @@ main_layout = [
             [sg.Column(home_layout, key= '-HOME_LAYOUT-'), 
              sg.Column(dine_take_layout, visible=False, key='-DINE_TAKE_LAYOUT-'),
              sg.Column(order_menu_layout, visible=False, key='-ORDER_MENU_LAYOUT-'),
-             sg.Column(ask_qty_layout, visible=False, key='-ASK_QTY_LAYOUT'),
+             sg.Column(ask_qty_layout, visible=False, key='-ASK_QTY_LAYOUT-'),
              sg.Column(cart_layout, visible=False, key='-CART_LAYOUT-'),
-             sg.Column(check_order_layout, visible=False, key='-CHECK_ORDER_LAYOUT-'),
+             sg.Column(check_order_layout, visible=False, key='-CHECKOUT_LAYOUT-'),
              sg.Column(processed_layout, visible=False, key='-PROCESSED_LAYOUT-'),
              sg.Column(confirm_layout, visible=False, key='-CONFIRM_LAYOUT-'),
              sg.Column(modify_layout, visible=False, key='-MODIFY_LAYOUT-'),
@@ -157,14 +160,25 @@ window = sg.Window('Speech \'o Order', main_layout, size=(360, 640))
 layout_num = 1
 window.start_thread(lambda: eh.start_assist(window, eh.START_PROMPT, 5, 'DONE START'), ('-THREAD-', '-THREAD ENDED-'))
 
+event = None
+values = None
 
 while True:
     event, values = window.read()
+
     if event in (None, 'Exit'):
         break
+
+    elif event[0] == '-BUTTON EVENT-':
+        if event[1] == 'START ORDER':
+            print('Button event')
+            event_queue.put(event[1])
+            window.write_event_value(('-THREAD-', 'START ORDER'), 'START ORDER')
+
+
     elif event[0] == '-MODIFY THREAD-':
         if event[1] == 'FINISHED PROMPT':
-            window.start_thread(lambda: eh.get_command(window, "CHICKEN", "BURGER", "FRIES", "CHEESE"), ('-THREAD-', '-THREAD ENDED-'))
+            window.start_thread(lambda: eh.get_command(window, event_queue, "CHICKEN", "BURGER", "FRIES", "CHEESE"), ('-THREAD-', '-THREAD ENDED-'))
             window['-HOME_LAYOUT-'].update("Listening...")
         
         elif event[1] in ["CHICKEN", "BURGER", "FRIES", "CHEESE"]:
@@ -197,10 +211,10 @@ while True:
 
     elif event[0] == '-THREAD-':
         if event[1] == 'DONE START':
-            window.start_thread(lambda: eh.get_command(window, "START ORDER"), ('-THREAD-', '-THREAD ENDED-'))
+            window.start_thread(lambda: eh.get_command(window, event_queue, "START ORDER"), ('-THREAD-', '-THREAD ENDED-'))
             window['-HOME_LAYOUT-'].update(visible = True)
     
-        elif event[1] == 'START ORDER' or event == 'START ORDER':
+        elif event[1] == 'START ORDER':
             # RONWALDO UPDATE MO UI HERE
             window[f'-HOME_LAYOUT-'].update(visible=False)
             layout_num = 2
@@ -208,7 +222,7 @@ while True:
             window.start_thread(lambda: eh.start_assist(window, eh.WELCOME, 7, 'DINE OR TAKE'), ('-THREAD-', '-THREAD ENDED-'))
             
         elif event[1] == 'DINE OR TAKE':
-            window.start_thread(lambda: eh.get_command(window, "DINE IN", "TAKE OUT"), ('-THREAD-', '-THREAD ENDED-'))
+            window.start_thread(lambda: eh.get_command(window, event_queue, "DINE IN", "TAKE OUT"), ('-THREAD-', '-THREAD ENDED-'))
             window['-DINE_TAKE_LAYOUT-'].update("Listening...")
 
         elif event[1] == 'DINE IN' or event[1] == 'TAKE OUT':
@@ -219,7 +233,7 @@ while True:
             window.start_thread(lambda: eh.start_assist(window, eh.CONFIRM_CHOICE + event[1] + "." + eh.CATEGORIES, 11, 'CATEGORY'), ('-THREAD-', '-THREAD ENDED-'))
 
         elif event[1] == "CATEGORY":
-            window.start_thread(lambda: eh.get_command(window, "RICE", "OTHERS", "VIEW ORDERS"), ('-THREAD-', '-THREAD ENDED-'))
+            window.start_thread(lambda: eh.get_command(window, event_queue, "RICE", "OTHERS", "VIEW ORDERS"), ('-THREAD-', '-THREAD ENDED-'))
             window['-ORDER_MENU_LAYOUT-'].update("Listening...")
 
         elif event[1] == "RICE" or event[1] == "OTHERS":
@@ -238,9 +252,9 @@ while True:
 
         elif event[1] == "RICE_CATEGORY" or event[1] == "OTHER_CATEGORY":
             if event[1] == "RICE_CATEGORY":
-                window.start_thread(lambda: eh.get_command(window, "CHICKEN", "BURGER"), ('-THREAD-', '-THREAD ENDED-'))
+                window.start_thread(lambda: eh.get_command(window, event_queue, "CHICKEN", "BURGER"), ('-THREAD-', '-THREAD ENDED-'))
             elif event[1] == "OTHER_CATEGORY":
-                window.start_thread(lambda: eh.get_command(window, "FRIES", "CHEESE"), ('-THREAD-', '-THREAD ENDED-'))
+                window.start_thread(lambda: eh.get_command(window, event_queue, "FRIES", "CHEESE"), ('-THREAD-', '-THREAD ENDED-'))
             window['-ORDER_MENU_LAYOUT-'].update("Listening...")
 
 
@@ -250,33 +264,33 @@ while True:
 
                 # RONWALDO UPDATE MO UI HERE
                 window['-ORDER_MENU_LAYOUT-'].update(visible=False)
-                window['-ASK_QTY_LAYOUT'].update(visible = True) # TEMPORARY FOR CHECKING, DELETE WHEN UI UPDATED
+                window['-ASK_QTY_LAYOUT-'].update(visible = True) # TEMPORARY FOR CHECKING, DELETE WHEN UI UPDATED
 
             elif event[1] == "BURGER":
                 temp_item = menu.burgersteak
 
                 # RONWALDO UPDATE MO UI HERE
                 window['-ORDER_MENU_LAYOUT-'].update(visible=False)
-                window['-ASK_QTY_LAYOUT'].update(visible = True) # TEMPORARY FOR CHECKING, DELETE WHEN UI UPDATED
+                window['-ASK_QTY_LAYOUT-'].update(visible = True) # TEMPORARY FOR CHECKING, DELETE WHEN UI UPDATED
             
             elif event[1] == "FRIES":
                 temp_item = menu.fries
 
                 # RONWALDO UPDATE MO UI HERE
                 window['-ORDER_MENU_LAYOUT-'].update(visible=False)
-                window['-ASK_QTY_LAYOUT'].update(visible = True) # TEMPORARY FOR CHECKING, DELETE WHEN UI UPDATED
+                window['-ASK_QTY_LAYOUT-'].update(visible = True) # TEMPORARY FOR CHECKING, DELETE WHEN UI UPDATED
 
             elif event[1] == "CHEESE":
                 temp_item = menu.burger
 
                 window['-ORDER_MENU_LAYOUT-'].update(visible=False)
-                window['-ASK_QTY_LAYOUT'].update(visible = True) # TEMPORARY FOR CHECKING, DELETE WHEN UI UPDATED
+                window['-ASK_QTY_LAYOUT-'].update(visible = True) # TEMPORARY FOR CHECKING, DELETE WHEN UI UPDATED
 
             window.start_thread(lambda: eh.start_assist(window, eh.ASK_QTY, 3, 'ASK QTY'), ('-THREAD-', '-THREAD ENDED-'))
 
 
         elif event[1] == "ASK QTY":
-            window.start_thread(lambda: eh.get_command(window, *eh.ALLOWED_QTY), ('-THREAD-', '-THREAD ENDED-'))
+            window.start_thread(lambda: eh.get_command(window, event_queue, *eh.ALLOWED_QTY), ('-THREAD-', '-THREAD ENDED-'))
             window[f'-ASK_QTY_LAYOUT-'].update("Listening...")
 
 
@@ -291,7 +305,7 @@ while True:
 
 
         elif event[1] == "CONFIRM ITEM":
-            window.start_thread(lambda: eh.get_command(window, "ADD TO CART", "CANCEL ITEM"), ('-THREAD-', '-THREAD ENDED-'))
+            window.start_thread(lambda: eh.get_command(window, event_queue, "ADD TO CART", "CANCEL ITEM"), ('-THREAD-', '-THREAD ENDED-'))
             window['-ASK_QTY_LAYOUT-'].update("Listening...")
 
         
@@ -327,12 +341,10 @@ while True:
             
             
             
-            
 
         elif event[1] == "ORDER ACTION":
-            window.start_thread(lambda: eh.get_command(window, "MODIFY", "CHECKOUT", "EXIT", "BACK"), ('-THREAD-', '-THREAD ENDED-'))
+            window.start_thread(lambda: eh.get_command(window, event_queue, "MODIFY", "CHECKOUT", "EXIT", "BACK"), ('-THREAD-', '-THREAD ENDED-'))
             window['-CART_LAYOUT-'].update("Listening...")
-
 
         elif event[1] == "MODIFY":
             window['-CART_LAYOUT-'].update(visible=False) # TEMPORARY FOR CHECKING, DELETE WHEN UI UPDATED
@@ -342,7 +354,7 @@ while True:
 
 
         elif event[1] == "MODIFY OPTION":
-            window.start_thread(lambda: eh.get_command(window, "CHANGE", "DELETE"), ('-THREAD-', '-THREAD ENDED-'))
+            window.start_thread(lambda: eh.get_command(window, event_queue, "CHANGE", "DELETE"), ('-THREAD-', '-THREAD ENDED-'))
             window['-MODIFY_LAYOUT-'].update("Listening...")
 
         elif event[1] == "DELETE":
@@ -350,7 +362,7 @@ while True:
             window['-MODIFY_LAYOUT-'].update("Listening...")
 
         elif event[1] == "CONFIRM DELETE":
-            window.start_thread(lambda: eh.get_command(window, "YES", "NO"), ('-THREAD-', '-THREAD ENDED-'))
+            window.start_thread(lambda: eh.get_command(window, event_queue, "YES", "NO"), ('-THREAD-', '-THREAD ENDED-'))
             window['-MODIFY_LAYOUT-'].update("Listening...")
         
         elif event[1] == "YES":
@@ -368,7 +380,7 @@ while True:
         
         elif event[1] == "DONE CHECKOUT":
             window[f'-CHECKOUT_LAYOUT-'].update("Listening...") # TEMPORARY FOR CHECKING, DELETE WHEN UI UPDATED
-            window.start_thread(lambda: eh.get_command(window, "CONFIRM ORDER", "BACK"), ('-THREAD-', '-THREAD ENDED-'))
+            window.start_thread(lambda: eh.get_command(window, event_queue, "CONFIRM ORDER", "BACK"), ('-THREAD-', '-THREAD ENDED-'))
             
         elif event[1] == "CONFIRM ORDER":
             window[f'-CHECKOUT_LAYOUT-'].update(visible=False) # TEMPORARY FOR CHECKING, DELETE WHEN UI UPDATED
