@@ -144,7 +144,7 @@ main_layout = [
              sg.Column(order_menu_layout, visible=False, key='-ORDER_MENU_LAYOUT-'),
              sg.Column(ask_qty_layout, visible=False, key='-ASK_QTY_LAYOUT-'),
              sg.Column(cart_layout, visible=False, key='-CART_LAYOUT-'),
-             sg.Column(check_order_layout, visible=False, key='-CHECKOUT_LAYOUT-'),
+             sg.Column(check_order_layout, visible=False, key='-CHECK_ORDER_LAYOUT-'),
              sg.Column(processed_layout, visible=False, key='-PROCESSED_LAYOUT-'),
              sg.Column(confirm_layout, visible=False, key='-CONFIRM_LAYOUT-'),
              sg.Column(modify_layout, visible=False, key='-MODIFY_LAYOUT-'),
@@ -201,7 +201,7 @@ while True:
         elif event[1] == 'START ORDER':
             # RONWALDO UPDATE MO UI HERE
             window[f'-HOME_LAYOUT-'].update(visible=False)
-            window[f'-CHECK_ORDER_LAYOUT-'].update(visible=True) # TEMPORARY FOR CHECKING, DELETE WHEN UI UPDATED
+            window[f'-DINE_TAKE_LAYOUT-'].update(visible=True) # TEMPORARY FOR CHECKING, DELETE WHEN UI UPDATED
             window.start_thread(lambda: eh.start_assist(window, eh.WELCOME, 7, 'DINE OR TAKE'), ('-THREAD-', '-THREAD ENDED-'))
             
         elif event[1] == 'DINE OR TAKE':
