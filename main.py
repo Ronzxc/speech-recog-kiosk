@@ -65,24 +65,40 @@ modify_layout = [[sg.Text(text="Modify your order",
                     expand_x=True,
                     justification='center',
                     background_color=('#FF8A08'))],
+                 [sg.Frame('', layout=[
+                            [sg.Text('Content inside the frame', justification='center')],
+                            [sg.Button('Button inside the frame')]
+                    ], background_color=('#FF6500'), expand_x=True ,size = (400, 525))]
                     ]
 
 confirm_layout = [[sg.Text(text="Confirm Delete", 
                     expand_x=True,
                     justification='center',
                     background_color=('#FF8A08'))],
+                  [sg.Frame('', layout=[
+                            [sg.Text('Content inside the frame', justification='center')],
+                            [sg.Button('Button inside the frame')]
+                    ], background_color=('#FF6500'), expand_x=True ,size = (400, 525))]
                     ]
 
 check_order_layout = [[sg.Text(text="Check your Order before we proceed", 
                     expand_x=True,
                     justification='center',
                     background_color=('#FF8A08'))],
+                    [sg.Frame('', layout=[
+                            [sg.Text('Content inside the frame', justification='center')],
+                            [sg.Button('Button inside the frame')]
+                    ], background_color=('#FF6500'), expand_x=True ,size = (400, 525))]
                     ]
 
 processed_layout = [[sg.Text(text="Your order have been processed", 
                     expand_x=True,
                     justification='center',
                     background_color=('#C40C0C'))],
+                    [sg.Frame('', layout=[
+                            [sg.Text('Content inside the frame', justification='center')],
+                            [sg.Button('Button inside the frame')]
+                    ], background_color=('#FF6500'), expand_x=True ,size = (400, 525))]
                     ]
 
 
@@ -90,24 +106,25 @@ ask_qty_layout = [[sg.Text(text="How many?",
                     expand_x=True,
                     justification='center',
                     background_color=('#FF8A08'))],
+                  [sg.Frame('', layout=[
+                            [sg.Text('Content inside the frame', justification='center')],
+                            [sg.Button('Button inside the frame')]
+                    ], background_color=('#FF6500'), expand_x=True ,size = (400, 525))]
                     ]
 
 cart_layout = [[sg.Text(text="Cart", 
                     expand_x=True,
                     justification='center',
                     background_color=('#FF8A08'))],
+               
+               [sg.Frame('', layout=[
+                            [sg.Column([
+                            [sg.Image(filename=menu.chicken[1], size=(75, 75), pad=10), sg.Image(filename=menu.burgersteak[1], size=(75, 75))]
+                        ], justification='center', background_color='#FFC100')],
+                            [sg.Text('Content inside the frame')],
+                            [sg.Button('Button inside the frame')]
+                    ], background_color=('#FF6500'), expand_x=True ,size = (400, 525))]
                     ]
-
-
-checkout_layout = [[sg.Text(text="CHECKOUT", 
-
-                    expand_x=True,
-                    justification='center',
-                    background_color=('#FF8A08'))],
-                    ]
-
-#Layout for speech 1
-speech1_layout = [[]]
 
 
 home_layout = [
@@ -154,7 +171,6 @@ main_layout = [
 sg.theme_background_color('#FF8A08')
 window = sg.Window('Speech \'o Order', main_layout, size=(360, 640))
 
-layout_num = 1
 window.start_thread(lambda: eh.start_assist(window, eh.START_PROMPT, 5, 'DONE START'), ('-THREAD-', '-THREAD ENDED-'))
 
 
@@ -198,13 +214,11 @@ while True:
     elif event[0] == '-THREAD-':
         if event[1] == 'DONE START':
             window.start_thread(lambda: eh.get_command(window, "START ORDER"), ('-THREAD-', '-THREAD ENDED-'))
-            window['-HOME_LAYOUT-'].update(visible = True)
     
         elif event[1] == 'START ORDER' or event == 'START ORDER':
             # RONWALDO UPDATE MO UI HERE
             window[f'-HOME_LAYOUT-'].update(visible=False)
-            layout_num = 2
-            window[f'-DINE_TAKE_LAYOUT-'].update(visible=True) # TEMPORARY FOR CHECKING, DELETE WHEN UI UPDATED
+            window[f'-CHECK_ORDER_LAYOUT-'].update(visible=True) # TEMPORARY FOR CHECKING, DELETE WHEN UI UPDATED
             window.start_thread(lambda: eh.start_assist(window, eh.WELCOME, 7, 'DINE OR TAKE'), ('-THREAD-', '-THREAD ENDED-'))
             
         elif event[1] == 'DINE OR TAKE':
@@ -298,7 +312,7 @@ while True:
         elif event[1] in ["ADD TO CART", "CANCEL ITEM", "BACK"]:
             # RONWALDO UPDATE MO UI HERE
             window['-ASK_QTY_LAYOUT-'].update(visible=False) # TEMPORARY FOR CHECKING, DELETE WHEN UI UPDATED
-            window['-CHECKOUT_LAYOUT-'].update(visible=False) # TEMPORARY FOR CHECKING, DELETE WHEN UI UPDATED
+            window['-CHECK_ORDER_LAYOUT-'].update(visible=False) # TEMPORARY FOR CHECKING, DELETE WHEN UI UPDATED
             window['-CART_LAYOUT-'].update(visible=False) # TEMPORARY FOR CHECKING, DELETE WHEN UI UPDATED
             window['-ORDER_MENU_LAYOUT-'].update(visible=True) # TEMPORARY FOR CHECKING, DELETE WHEN UI UPDATED
 
@@ -348,17 +362,17 @@ while True:
         elif event[1] == "CHECKOUT":
             # HELLO GEO
             window[f'-CART_LAYOUT-'].update(visible=False)
-            window[f'-CHECKOUT_LAYOUT-'].update(visible=True) # TEMPORARY FOR CHECKING, DELETE WHEN UI UPDATED
+            window[f'-CHECK_ORDER_LAYOUT-'].update(visible=True) # TEMPORARY FOR CHECKING, DELETE WHEN UI UPDATED
             window.start_thread(lambda: eh.prompt_check_out_menu(cart, window),('-THREAD-', '-THREAD ENDED-'))
 
         
         
         elif event[1] == "DONE CHECKOUT":
-            window[f'-CHECKOUT_LAYOUT-'].update("Listening...") # TEMPORARY FOR CHECKING, DELETE WHEN UI UPDATED
+            window[f'-CHECK_ORDER_LAYOUT-'].update("Listening...") # TEMPORARY FOR CHECKING, DELETE WHEN UI UPDATED
             window.start_thread(lambda: eh.get_command(window, "CONFIRM ORDER", "BACK"), ('-THREAD-', '-THREAD ENDED-'))
             
         elif event[1] == "CONFIRM ORDER":
-            window[f'-CHECKOUT_LAYOUT-'].update(visible=False) # TEMPORARY FOR CHECKING, DELETE WHEN UI UPDATED
+            window[f'-CHECK_ORDER_LAYOUT-'].update(visible=False) # TEMPORARY FOR CHECKING, DELETE WHEN UI UPDATED
             window[f'-DINE_TAKE_LAYOUT-'].update(visible=True) # TEMPORARY FOR CHECKING, DELETE WHEN UI UPDATED
             window.start_thread(lambda: eh.start_assist(window, eh.FINISHED_CHECKOUT, 10, 'EXIT_APP'), ('-THREAD-', '-THREAD ENDED-'))
             
