@@ -288,7 +288,7 @@ while True:
             window['-LISTEN1-'].update("Listening...")
 
         
-        elif event[1] in ["ADD TO CART", "CANCEL ITEM", "BACK"]:
+        elif event[1] in ["ADD TO CART", "CANCEL ITEM", "BACK", "NO"]:
             # RONWALDO UPDATE MO UI HERE
             window['-LISTEN1-'].update("change to speech 4 gui (see figma for ref)") # TEMPORARY FOR CHECKING, DELETE WHEN UI UPDATED
 
@@ -298,7 +298,7 @@ while True:
                 print(cart)
                 window.start_thread(lambda: eh.start_assist(window, eh.CONFIRM_ADD + ". " + eh.CATEGORIES, 10, 'CATEGORY'), ('-THREAD-', '-THREAD ENDED-'))
             
-            elif event[1] == "CANCEL ITEM" or event[1] == "BACK":
+            elif event[1] == "CANCEL ITEM" or event[1] == "BACK" or event[1] == "NO":
                 window.start_thread(lambda: eh.start_assist(window, eh.CATEGORIES, 7, 'CATEGORY'), ('-THREAD-', '-THREAD ENDED-'))
             
             temp_item = None
@@ -335,7 +335,19 @@ while True:
             window.start_thread(lambda: eh.get_command(window, "CHANGE", "DELETE"), ('-THREAD-', '-THREAD ENDED-'))
             window['-LISTEN1-'].update("Listening...")
 
+        elif event[1] == "DELETE":
+            window.start_thread(lambda: eh.start_assist(window, eh.CONFIRM_DELETE, 10, 'CONFIRM DELETE'), ('-THREAD-', '-THREAD ENDED-'))
+
+
+        elif event[1] == "CONFIRM DELETE":
+            window.start_thread(lambda: eh.get_command(window, "YES", "NO"), ('-THREAD-', '-THREAD ENDED-'))
+
         
+        elif event[1] == "YES":
+            cart.pop(temp_item)
+            window.start_thread(lambda: eh.start_assist(window, eh.ITEM_DELETE, 3, 'NO'), ('-THREAD-', '-THREAD ENDED-'))
+            
+
         elif event[1] == "CHECKOUT":
             # HELLO GEO
             window.start_thread(lambda: eh.prompt_check_out_menu(cart, window),('-THREAD-', '-THREAD ENDED-'))

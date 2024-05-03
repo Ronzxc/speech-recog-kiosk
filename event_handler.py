@@ -41,6 +41,10 @@ def get_cart_list(cart):
 
 
 FINISHED_CHECKOUT = "Thank you for using our service. Please claim your order number and proceed to cashier. Have a good day!"
+CONFIRM_DELETE = "You said delete. Say yes to confirm deletion or no to go back to menu"
+ITEM_DELETE = "Item deleted from cart"
+
+
 
 
 def get_command(window=None, *args):
@@ -90,7 +94,7 @@ def prompt_check_out_menu(cart, window=None):
     # print(orders)
     # if(cart.size() == 1)
     if(len(cart.items()) == 1 and list(cart.items())[0][1] == 1):
-        utils.kiosk_prompt(f"Your check out item is: {orders} Say Confirm to print payment reference or Cancel to go back to menu")
+        utils.kiosk_prompt(f"Your check out item is: {orders} Say Confirm to print payment reference or Back to go back to menu")
     else:
         utils.kiosk_prompt(f"Your check out items are: {orders} Say Confirm order to print payment reference or Back to go back to menu")
     window.write_event_value(('-CHECKOUT THREAD-', 'DONE CHECKOUT'), 'DONE CHECKOUT')
