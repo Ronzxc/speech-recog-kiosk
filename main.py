@@ -7,12 +7,14 @@ ricemeals = [menu.chicken, menu.burgersteak]
 othermeals = [menu.burger, menu.fries]
 
 # data to be manipulated
-cart = {menu.chicken: 1} #format {menu.item1: qty, menu.item2: qty}
+cart = {menu.chicken: 1, menu.burgersteak: 3} #format {menu.item1: qty, menu.item2: qty}
 temp_item = None
 temp_qty = 0
 
 
 #Layout for order menu
+
+
 layout_tab1 = [[sg.Text('Content for Tab 1', background_color=('#FF8A08'))],
                [sg.Column([
         [sg.Image(filename=menu.chicken[1], size=(75, 75), pad=10, background_color='#FFC100'), 
@@ -97,20 +99,18 @@ ask_qty_layout = [[sg.Text(text="How many?",
                     ], background_color=('#FF6500'), expand_x=True ,size = (400, 525))]
                     ]
 
-cart_layout = [[sg.Text(text="Cart", 
-                    expand_x=True,
-                    justification='center',
-                    background_color=('#FF8A08'))],
-               
-               [sg.Frame('', layout=[
-                            [sg.Column([
-                            [sg.Image(filename=menu.chicken[1], size=(75, 75), pad=10), sg.Image(filename=menu.burgersteak[1], size=(75, 75))]
-                        ], justification='center', background_color='#FFC100')],
-                            [sg.Text('Content inside the frame')],
-                            [sg.Button('Button inside the frame')]
-                    ], background_color=('#FF6500'), expand_x=True ,size = (400, 525))]
-                    ]
 
+layout_column = sg.Column([], key='-COLUMN-', expand_x=True)
+items_layout = []
+for item, qty in cart.items():
+    items_layout.append([sg.Image(filename=item[1], size=(75, 75), pad=10),
+                         sg.Text(f"{item[0]} x{qty}")])
+
+cart_layout = [
+    [sg.Text("Cart", expand_x=True, justification='center', background_color='#FF8A08')],
+    [sg.Frame('', layout=[[sg.Column(items_layout, key='-COLUMN-', expand_x=True)]], background_color='#FF6500', expand_x=True, size=(400, 525))]
+]
+# layout_column.update(items_layout)
 
 home_layout = [
     [sg.Text(text="Hello RotttedBrain!", 
@@ -140,11 +140,11 @@ home_layout = [
 ]
 
 main_layout = [
-            [sg.Column(home_layout, key= '-HOME_LAYOUT-'), 
+            [sg.Column(home_layout, key= '-HOME_LAYOUT-'), #CHANGE BACK TO home_layout  
              sg.Column(dine_take_layout, visible=False, key='-DINE_TAKE_LAYOUT-'),
              sg.Column(order_menu_layout, visible=False, key='-ORDER_MENU_LAYOUT-'),
              sg.Column(ask_qty_layout, visible=False, key='-ASK_QTY_LAYOUT-'),
-             sg.Column(cart_layout, visible=False, key='-CART_LAYOUT-'),
+             sg.Column(cart_layout, visible=False, key='-CART_LAYOUT-'), #CHANGE BACK
              sg.Column(check_order_layout, visible=False, key='-CHECK_ORDER_LAYOUT-'),
              sg.Column(processed_layout, visible=False, key='-PROCESSED_LAYOUT-'),
              sg.Column(confirm_layout, visible=False, key='-CONFIRM_LAYOUT-'),
@@ -166,6 +166,7 @@ while True:
         if event[1] == 'FINISHED PROMPT':
             window.start_thread(lambda: eh.get_command(window, "CHICKEN", "BURGER", "FRIES", "CHEESE"), ('-THREAD-', '-THREAD ENDED-'))
             window['-HOME_LAYOUT-'].update("Listening...")
+
         
         elif event[1] in ["CHICKEN", "BURGER", "FRIES", "CHEESE"]:
             match event[1]:
@@ -201,6 +202,7 @@ while True:
     
         elif event[1] == 'START ORDER':
             # RONWALDO UPDATE MO UI HERE
+            window.refresh()
             window[f'-HOME_LAYOUT-'].update(visible=False)
             window[f'-DINE_TAKE_LAYOUT-'].update(visible=True) # TEMPORARY FOR CHECKING, DELETE WHEN UI UPDATED
             window.start_thread(lambda: eh.start_assist(window, eh.WELCOME, 7, 'DINE OR TAKE'), ('-THREAD-', '-THREAD ENDED-'))
@@ -222,23 +224,19 @@ while True:
 
         elif event[1] == "RICE" or event[1] == "OTHERS":
             if event[1] == "RICE":
-                # RONWALDO UPDATE MO UI HERE
-                window['-ORDER_MENU_LAYOUT-'].update("change to speech 6 gui (see figma for ref)") # TEMPORARY FOR CHECKING, DELETE WHEN UI UPDATED
-
+                window['RICEMEALS'].select()
                 window.start_thread(lambda: eh.start_assist(window, eh.RICE_MENU, 5, 'RICE_CATEGORY'), ('-THREAD-', '-THREAD ENDED-'))
             
             elif event[1] == "OTHERS":
-                # RONWALDO UPDATE MO UI HERE
-                window['-ORDER_MENU_LAYOUT-'].update("change to speech 6 gui (see figma for ref)") # TEMPORARY FOR CHECKING, DELETE WHEN UI UPDATED
-
+                window['OTHERMEALS'].select()
                 window.start_thread(lambda: eh.start_assist(window, eh.OTHER_MENU, 5, 'OTHER_CATEGORY'), ('-THREAD-', '-THREAD ENDED-'))
 
 
         elif event[1] == "RICE_CATEGORY" or event[1] == "OTHER_CATEGORY":
             if event[1] == "RICE_CATEGORY":
-                window.start_thread(lambda: eh.get_command(window, "CHICKEN", "BURGER"), ('-THREAD-', '-THREAD ENDED-'))
+                window.start_thread(lambda: eh.get_command(window, "CHICKEN", "BURGER", "OTHERS"), ('-THREAD-', '-THREAD ENDED-'))
             elif event[1] == "OTHER_CATEGORY":
-                window.start_thread(lambda: eh.get_command(window, "FRIES", "CHEESE"), ('-THREAD-', '-THREAD ENDED-'))
+                window.start_thread(lambda: eh.get_command(window, "FRIES", "CHEESE", "RICE"), ('-THREAD-', '-THREAD ENDED-'))
             window['-ORDER_MENU_LAYOUT-'].update("Listening...")
 
 
@@ -317,10 +315,14 @@ while True:
         
         elif event[1] == "VIEW ORDERS":
             # RONWALDO UPDATE MO UI HERE
+            for item, qty in cart.items():
+                items_layout.append([sg.Image(filename=item[1], size=(75, 75), pad=10),
+                                     sg.Text(f"{item[0]} x{qty}")])
+
+            # layout_column.update(items_layout)
             window['-ORDER_MENU_LAYOUT-'].update(visible=False) # TEMPORARY FOR CHECKING, DELETE WHEN UI UPDATED
             window['-CART_LAYOUT-'].update(visible=True) # TEMPORARY FOR CHECKING, DELETE WHEN UI UPDATED
-
-            timeout = len(cart.keys()) + 10
+            timeout = len(cart.keys()) + 1
             window.start_thread(lambda: eh.start_assist(window, eh.get_cart_list(cart), timeout, 'ORDER ACTION'), ('-THREAD-', '-THREAD ENDED-'))
             
             
