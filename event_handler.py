@@ -35,6 +35,7 @@ def get_cart_list(cart):
         orders = orders + f"{v} {k[0]}, "
     
     prompt = f"{prompt} {orders}. Say Modify to modify your order, Checkout to proceed to payment, Exit to cancel transaction or Back to go back to menu"
+    print("UPDATE COLUMN")
     
     return prompt
     
@@ -86,6 +87,14 @@ def get_modify_command(window=None, *args):
         if command in args:
             window.write_event_value(('-MODIFY THREAD-', command), command)
             break
+
+def update_cart(cart, items_layout, layout_column):
+    for item, qty in cart.items():
+        items_layout.append([sg.Image(filename=item[1], size=(75, 75), pad=10),
+                             sg.Text(f"{item[0]} x{qty}")])
+
+    layout_column.update(items_layout)
+
 
     
 def prompt_check_out_menu(cart, window=None):
