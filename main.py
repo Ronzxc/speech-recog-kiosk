@@ -224,11 +224,11 @@ while True:
 
         elif event[1] == "RICE" or event[1] == "OTHERS":
             if event[1] == "RICE":
-                window['RICEMEALS'].select()
+                window['🍚'].select()
                 window.start_thread(lambda: eh.start_assist(window, eh.RICE_MENU, 5, 'RICE_CATEGORY'), ('-THREAD-', '-THREAD ENDED-'))
             
             elif event[1] == "OTHERS":
-                window['OTHERMEALS'].select()
+                window['🍔'].select()
                 window.start_thread(lambda: eh.start_assist(window, eh.OTHER_MENU, 5, 'OTHER_CATEGORY'), ('-THREAD-', '-THREAD ENDED-'))
 
 
