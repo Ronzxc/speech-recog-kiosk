@@ -1,11 +1,10 @@
 import PySimpleGUI as sg
 import event_handler as eh
-
+from PIL import Image, ImageTk
 # menu
 import menu_item as menu
 ricemeals = [menu.chicken, menu.burgersteak]
 othermeals = [menu.burger, menu.fries]
-
 
 # data to be manipulated
 cart = {menu.chicken: 1} #format {menu.item1: qty, menu.item2: qty}
@@ -16,22 +15,24 @@ temp_qty = 0
 #Layout for order menu
 layout_tab1 = [[sg.Text('Content for Tab 1', background_color=('#FF8A08'))],
                [sg.Column([
-        [sg.Image(filename=menu.chicken[1], size=(75, 75), pad=10), sg.Image(filename=menu.burgersteak[1], size=(75, 75))]
+        [sg.Image(filename=menu.chicken[1], size=(75, 75), pad=10, background_color='#FFC100'), 
+         sg.Image(filename=menu.burgersteak[1], size=(75, 75), background_color='#FFC100')]
     ], justification='center', background_color='#FFC100')]]
 layout_tab2 = [[sg.Text('Content for Tab 2', background_color=('#FF8A08'))],
                [sg.Column([
-        [sg.Image(filename=menu.burger[1], size=(75, 75), pad=10), sg.Image(filename=menu.fries[1], size=(75, 75))]
+        [sg.Image(filename=menu.burger[1], size=(75, 75), pad=10, background_color='#FFC100' ), 
+         sg.Image(filename=menu.fries[1], size=(75, 75), background_color='#FFC100')]
     ], justification='center', background_color='#FFC100')]]
 
 
-tab1 = sg.Tab('RICEMEALS', layout_tab1, title_color='red', background_color=('#FF8A08'))
-tab2 = sg.Tab('OTHERMEALS', layout_tab2, title_color='green', background_color=('#FF8A08'))
+tab1 = sg.Tab('🍚', layout_tab1, background_color=('#FF8A08'))
+tab2 = sg.Tab('🍔', layout_tab2, background_color=('#FF8A08'))
 
 
 
 tab_group_layout = [[tab1, tab2]]
 
-tab_group = sg.TabGroup(tab_group_layout, tab_location='left', title_color='white', size=(400, 525), pad= 10, background_color=('#FF6500'))
+tab_group = sg.TabGroup(tab_group_layout, tab_location='left', title_color='black', size=(400, 525), pad= 10, background_color=('#FF8A08'), tab_background_color='#FF8A08', selected_title_color='#C40C0C', selected_background_color='Yellow', font=100 )
 
 order_menu_layout = [[sg.Text(text="Pick a Category", 
                     expand_x=True,
