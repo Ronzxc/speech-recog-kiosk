@@ -9,12 +9,13 @@ import time
 import menu_item as menu
 
 ALLOWED_QTY = ["ONE", "TWO", "THREE", "FOUR", "FIVE", "SIX", "SEVEN", "EIGHT", "NINE", "TEN"]
+TAGALOG_QTY = ["ISA", "DALAWA", "TATLO", "APAT", "LIMA", "ANIM", "PITO", "WALA", "SIAM", "SAMPU"]
 
 # prompts
-START_PROMPT = "Tap anywhere to start, or Say Start Order for Speech Option"
+START_PROMPT = "Welcome customer. Say Start Order to begin transaction"
 WELCOME = "Hello, I'm Beanie Aiah. I'm glad to assist you today. Would you like to dine in or take out"
 CONFIRM_CHOICE = "You chose "
-CATEGORIES = """""To view specific category, say Rice for Rice meals and Others for Other meals.
+CATEGORIES = """""To view specific category, say Rice or Kanin for Rice meals and Others for Other meals.
                     Or if you like to view your orders say view orders"""
 RICE_MENU = "You chose rice meals. Say chicken for chicken joy and burger for burger steak"
 OTHER_MENU = "You chose other meals. Say cheese for cheese burger and fries for french fries"
@@ -35,7 +36,7 @@ def get_cart_list(cart):
         orders = orders + f"{v} {k[0]}, "
     
     prompt = f"{prompt} {orders}. Say Modify to modify your order, Checkout to proceed to payment, Exit to cancel transaction or Back to go back to menu"
-    print("UPDATE COLUMN")
+    # print("UPDATE COLUMN")
     
     return prompt
     
