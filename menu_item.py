@@ -1,8 +1,8 @@
 # rice meals
-chicken = ("Chicken joy", "images\\chicken1.png")
-burgersteak = ("Burger Steak", "images\\burgersteak1.png")
+chicken = ("Chicken joy", "speech-recog-kiosk\images\chicken.png")
+burgersteak = ("Burger Steak", "speech-recog-kiosk\images\\burgersteak.png")
 
 # others
-burger = ("Cheese Burger", "images\\burger1.png")
-fries = ("French Fries", "images\\fries1.png")
+burger = ("Cheese Burger", "speech-recog-kiosk\images\\burger.png")
+fries = ("French Fries", "speech-recog-kiosk\images\\fries.png")
 

@@ -3,6 +3,8 @@ import event_handler as eh
 from PIL import Image, ImageTk
 # menu
 import menu_item as menu
+
+
 all_meals = [menu.chicken, menu.burgersteak, menu.burger, menu.fries]
 
 # data to be manipulated
@@ -15,64 +17,62 @@ temp_qty = 0
 #Layout for order menu
 
 
-layout_tab1 = [[sg.Text('Rice Meals', background_color=('#FF8A08'))],
+layout_tab1 = [[sg.Text('Rice Meals', background_color=('#E8DFCA'), colors='black', font=('Courier'))],
                [sg.Column([
-        [sg.Image(filename=menu.chicken[1], size=(75, 75), pad=10, background_color='#FFC100'), 
-         sg.Image(filename=menu.burgersteak[1], size=(75, 75), background_color='#FFC100')]
-    ], justification='center', background_color='#FFC100')]]
-layout_tab2 = [[sg.Text('Other Meals', background_color=('#FF8A08'))],
+        [sg.Image(filename=menu.chicken[1], size=(75, 75), pad=10, background_color='#4F6F52'), 
+         sg.Image(filename=menu.burgersteak[1], size=(75, 75), background_color='#4F6F52')]
+    ], justification='center', background_color='#1A4D2E')]]
+layout_tab2 = [[sg.Text('Other Meals', background_color=('#E8DFCA'), colors='black', font=('Courier'))],
                [sg.Column([
-        [sg.Image(filename=menu.burger[1], size=(75, 75), pad=10, background_color='#FFC100' ), 
-         sg.Image(filename=menu.fries[1], size=(75, 75), background_color='#FFC100')]
-    ], justification='center', background_color='#FFC100')]]
+        [sg.Image(filename=menu.burger[1], size=(75, 75), pad=10, background_color='#4F6F52' ), 
+         sg.Image(filename=menu.fries[1], size=(75, 75), background_color='#4F6F52')]
+    ], justification='center', background_color='#1A4D2E')]]
 
 
-tab1 = sg.Tab('🍚', layout_tab1, background_color=('#FF8A08'))
-tab2 = sg.Tab('🍔', layout_tab2, background_color=('#FF8A08'))
+tab1 = sg.Tab('🍚', layout_tab1, background_color=('#E8DFCA'))
+tab2 = sg.Tab('🍔', layout_tab2, background_color=('#E8DFCA'))
 
 tab_group_layout = [[tab1, tab2]]
 
-tab_group = sg.TabGroup(tab_group_layout, tab_location='left', title_color='black', size=(400, 525), pad= 10, background_color=('#FF8A08'), tab_background_color='#FF8A08', selected_title_color='#C40C0C', selected_background_color='Yellow', font=100 )
+tab_group = sg.TabGroup(tab_group_layout, tab_location='left', title_color='black', size=(400, 525), pad= 10, background_color=('#E8DFCA'), tab_background_color='#E8DFCA', selected_title_color='black', selected_background_color='#4F6F52', font=100 )
 
-order_menu_layout = [[sg.Text(text="Pick a Category", 
-                    expand_x=True,
-                    justification='center',
-                    background_color=('#C40C0C'))],
-                    [sg.Column([[tab_group]], background_color='#FF6500')]]
+order_menu_layout = [[sg.Text(text="Pick a Category", background_color=('#E8DFCA'), colors='black',
+                    expand_x=True, justification='center', pad=(0, 0), font=('Courier'))],
+                    [sg.Column([[tab_group]], background_color='#E8DFCA', pad=(0, 0))]]
 
 
-dine_take_layout = [[sg.Image(filename='images/bini.png', 
-              size=(0,525))]
+dine_take_layout = [[sg.Image(filename='speech-recog-kiosk\images\\bini.png', 
+              size=(0,525), pad=(0, 0), background_color=('#F5EFE6'))]
                     ]
 
 def item_details(item, qty, qty_key, item_key):
-    layout = [sg.pin(sg.Col([[sg.Image(filename=item[1], size=(75, 75), pad=10, background_color='#FFC100',)],
-                [sg.Text(item[0], justification='center')],
-                [sg.Text(qty, justification='center', key=(qty_key, item[0]))]
-                ], k=(item_key, item[0]), visible=False))]
+    layout = [sg.pin(sg.Col([[sg.Image(filename=item[1], size=(75, 75), pad=10, background_color='#4F6F52',)],
+                [sg.Text(item[0], justification='center', background_color=('#E8DFCA'), colors='black',  expand_x=True, pad=(0, 0), font=('Courier', 10))],
+                [sg.Text(qty, justification='center', key=(qty_key, item[0]), expand_x=True , pad=(0, 0), colors=('black'), background_color=('#E8DFCA'))]
+                ], k=(item_key, item[0]), visible=False, background_color=('#1A4D2E'), pad=(0, 0)))]
     return layout
 
-modify_layout = [[sg.Text(text="Modify your order", expand_x=True, justification='center', background_color=('#FF8A08'))],
+modify_layout = [[sg.Text(text="Modify your order", expand_x=True, justification='center', background_color=('#E8DFCA'), colors='black', pad=(0, 0), font=('Courier', 10))],
                  [sg.Frame('', layout=[
-                    [sg.Column([item_details(item, 1, '-EDIT QTY-', '-MODIFY ITEM-') for item in all_meals], element_justification='center', expand_x=True)]
-                    ], background_color=('#FF6500'), expand_x=True ,size = (400, 525))]
+                    [sg.Column([item_details(item, 1, '-EDIT QTY-', '-MODIFY ITEM-') for item in all_meals], element_justification='center', background_color=('#E8DFCA'),  expand_x=True)]
+                    ], background_color=('#E8DFCA'), expand_x=True ,size = (400, 525), pad=(0, 0))]
                     ]
 
-ask_qty_layout = [[sg.Text(text="How many?", expand_x=True, justification='center', background_color=('#FF8A08'))],
+ask_qty_layout = [[sg.Text(text="How many?", expand_x=True, justification='center', background_color=('#E8DFCA'), colors='black', pad=(0, 0), font=('Courier'))],
                   [sg.Frame('', layout=[
-                    [sg.Column([item_details(item, 1, '-MODIFY DETAILS-', '-ASK_QTY-') for item in all_meals], element_justification='center', expand_x=True)]], 
-                            background_color=('#FF6500'), expand_x=True ,size = (400, 525))]
+                    [sg.Column([item_details(item, 1, '-MODIFY DETAILS-', '-ASK_QTY-') for item in all_meals], element_justification='center', expand_x=True, background_color=('#E8DFCA'))]], 
+                            background_color=('#E8DFCA'), expand_x=True ,size = (400, 525), pad=(0, 0))]
                     ]
 
 def item_row(item, qty):    
-    row =  [sg.pin(sg.Col([[sg.Image(filename=item[1], size=(75, 75), pad=10),
-                         sg.Text(f"{item[0]} x {qty}", key=(item[0], 'QUANTITY'))]], k=('-CART ITEM-', item[0]), visible=False))]
+    row =  [sg.pin(sg.Col([[sg.Image(filename=item[1], size=(75, 75), pad=10, background_color=('#4F6F52')),
+                         sg.Text(f"{item[0]} x {qty}", key=(item[0], 'QUANTITY'), background_color=('#E8DFCA'), colors='black', font=('Courier', 10))]], k=('-CART ITEM-', item[0]), visible=False, background_color=('#E8DFCA'), pad=(0, 0)))]
     return row
 
 cart_layout = [
-    [sg.Text("Cart", expand_x=True, justification='center', background_color='#FF8A08', key='CART_CHECKOUT')],
-    [sg.Frame('', layout=[[sg.Column([item_row(item, 0) for item in all_meals], key='-ORDER LIST-', expand_x=True)]], 
-              background_color='#FF6500', expand_x=True, size=(400, 525))]
+    [sg.Text("Cart", expand_x=True, justification='center', colors=('black'), background_color='#E8DFCA', pad=(0, 0), key='CART_CHECKOUT', font=('Courier'))],
+    [sg.Frame('', layout=[[sg.Column([item_row(item, 0) for item in all_meals], key='-ORDER LIST-', expand_x=True, expand_y=True, background_color=('#E8DFCA'), pad=(0, 0))]], 
+              background_color='#E8DFCA', expand_x=True, size=(400, 525), pad=(0, 0))]
 ]
 
 # check_order_layout = [[sg.Text(text="Check your Order before we proceed", 
@@ -85,30 +85,15 @@ cart_layout = [
 
 home_layout = [
     [sg.Text(text="Hello Customer!", 
-             font=('Calibri', 20), 
+             font=('Courier', 20), 
              expand_x=True, 
-             background_color=('#C40C0C'), 
-             colors='#F7EEDD', 
+             background_color=('#E8DFCA'), 
+             colors='black', 
              justification='center', 
-             enable_events=True , 
+             enable_events=True, pad=(0, 0),
              key='-TEXT-')],
-    [sg.Image(filename='images/home.png',
-              size=(0,425))],
-    # [sg.Button('Start Order',
-    #          font=('Calibri', 15), 
-    #          expand_x=True,
-    #          button_color=('#C40C0C'),
-    #          enable_events=True,
-    #          key=('-THREAD-', 'VIEW ORDERS'))],
-    [sg.Text(text="Say \"Start Order\" to begin transaction", 
-             font=('Calibri', 15), 
-             expand_x=True, 
-             background_color=('#C40C0C'), 
-             justification='center')],
-    [sg.Text(text="", font=('Calibri', 15), 
-             expand_x=True, 
-             background_color=('#FF8A08'),
-             justification='center')],
+    [sg.Image(filename='speech-recog-kiosk\images\\newhome.png',
+              size=(0,550), pad=(0, 0), background_color=('#F5EFE6'))]
 ]
 
 main_layout = [
@@ -122,7 +107,7 @@ main_layout = [
              ]]
 
     
-sg.theme_background_color('#FF8A08')
+sg.theme_background_color('#F5EFE6')
 window = sg.Window('Speech \'o Order', main_layout, size=(360, 640))
 
 window.start_thread(lambda: eh.start_assist(window, eh.START_PROMPT, 5, 'DONE START'), ('-THREAD-', '-THREAD ENDED-'))
